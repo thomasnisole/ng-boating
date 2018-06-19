@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  defaultUserPreferences: {
+    language: 'fr',
+    port: null,
+    baudRate: null
+  },
+  baudRates: [4800, 9600, 19200, 38400]
 };
 
 /*

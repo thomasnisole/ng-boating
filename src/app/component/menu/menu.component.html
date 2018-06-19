@@ -1,0 +1,20 @@
+<ul class="list-unstyled">
+  <li class="bg-primary">
+    <a [routerLink]="['/app']">
+      <i class="fa fa-compass"></i>
+      <span>{{ 'menu.gps'|translate }}</span>
+    </a>
+  </li>
+  <li class="bg-warning">
+    <a>
+      <i class="fa fa-calendar"></i>
+      <span>{{ 'menu.tide'|translate }}</span>
+    </a>
+  </li>
+  <li class="bg-secondary">
+    <a [routerLink]="['/app','settings']">
+      <i class="fa fa-cog"></i>
+      <span>{{ 'menu.settings'|translate }}</span>
+    </a>
+  </li>
+</ul>

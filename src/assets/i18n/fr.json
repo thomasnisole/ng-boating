@@ -1,0 +1,30 @@
+{
+  "menu": {
+    "gps": "GPS",
+    "tide": "Marée",
+    "settings": "Réglages"
+  },
+  "settings": {
+    "menu": {
+      "general": "Général",
+      "gps-tracker": "GPS Tracker"
+    },
+    "general": {
+      "language": {
+        "fr": "Français",
+        "en": "Anglais"
+      },
+      "label": {
+        "language": "Langue"
+      }
+    },
+    "tracker": {
+      "label": {
+        "connected-on-port": "Connecté sur le port ",
+        "port": "Port",
+        "baud-rate": "Baud rate",
+        "logs": "Logs"
+      }
+    }
+  }
+}

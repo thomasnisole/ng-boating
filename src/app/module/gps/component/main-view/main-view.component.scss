@@ -1,0 +1,41 @@
+.dial {
+  font-size: 10px;
+}
+
+div.d-flex {
+  color: white;
+
+  div.left-side {
+    flex-grow: 1;
+    flex-direction: column;
+
+    width: 50%;
+
+    > div {
+      height: 25%;
+
+      &:not(:last-child) {
+        border-bottom: solid 1px white;
+      }
+    }
+  }
+
+  div.right-side {
+    flex-grow: 1;
+    flex-direction: column;
+
+    width: 50%;
+    border-left: solid 1px white;
+
+    .speed {
+      @extend .dial;
+      height: 60%;
+      border-bottom: solid 1px white;
+    }
+
+    .angle {
+      @extend .dial;
+      height: 40%;
+    }
+  }
+}
