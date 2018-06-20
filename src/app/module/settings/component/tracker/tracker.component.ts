@@ -65,9 +65,15 @@ export class TrackerComponent implements OnInit, OnDestroy {
       .subscribe(
         (ports: Port[]) => {
           this.ports = ports;
+
           if (ports.length === 1) {
             this.currentPort = ports[0].name;
-            this.onPortChange();
+            this.userPreferencesService.preferences.port = this.currentPort;
+            this.userPreferencesService.save();
+          }
+
+          if (this.currentPort) {
+            this.connect();
           }
         },
         (err) => {

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SatellitesViewComponent } from './component/satellites-view/satellites-view.component';
 import {GpsRoutingModule} from './gps-routing.module';
 import { MainViewComponent } from './component/main-view/main-view.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    GpsRoutingModule
+    GpsRoutingModule,
+    SharedModule
   ],
   declarations: [
     SatellitesViewComponent,

@@ -26,5 +26,15 @@
         "logs": "Logs"
       }
     }
+  },
+  "gps": {
+    "dial-title": {
+      "coordinates": "Coordonnées",
+      "distance-to-go": "Distance restante",
+      "eta": "Arrivée dans",
+      "speed": "Vitesse",
+      "angle": "Cap",
+      "angle-to-follow": "Cap à suivre"
+    }
   }
 }

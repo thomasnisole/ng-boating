@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, Observer, of} from 'rxjs/index';
 import {Port} from '../model/port.model';
 import {parsers, SerialPort, serialPortObjects} from '../../../../serial-port';
@@ -44,7 +44,7 @@ export class GpsService {
 
   public open(baudRate: number, port: string): Observable<boolean> {
     if (this.isOpen) {
-      return;
+      return of(true);
     }
 
     return Observable.create((observer: Observer<boolean>) => {
