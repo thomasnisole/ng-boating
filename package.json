@@ -36,6 +36,7 @@
     "core-js": "^2.5.4",
     "font-awesome": "4.7.0",
     "ng-bootstrap": "^1.6.3",
+    "ng2-fittext": "^1.1.1",
     "nmea": "^0.1.0",
     "promise-readable": "^3.1.5",
     "rxjs": "^6.0.0",

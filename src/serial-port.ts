@@ -1,5 +1,4 @@
 const remote = (<any>window).require('electron').remote;
-export const os = remote.require('os');
 export const fs = remote.require('fs');
 
 export class SerialPort {

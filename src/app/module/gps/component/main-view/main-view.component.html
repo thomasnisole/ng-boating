@@ -5,35 +5,47 @@
       <div class="dial-title">
         {{ 'gps.dial-title.coordinates'|translate }}
       </div>
-      <div class="dial-data dial-coordinates">
-        48° 06' 47.8267" N<br/>
-        01° 37' 27.5617" W
+      <div class="dial-data dial-coordinates" #coordinatesContainer>
+        <span [fittext]="true" [activateOnResize]="true" [container]="coordinatesContainer">
+          48° 06' 47.8267" N<br/>
+          01° 37' 27.5617" W
+        </span>
       </div>
     </div>
     <div class="dial">
       <div class="dial-title">
         {{ 'gps.dial-title.distance-to-go'|translate }}
       </div>
-      <div class="dial-data dial-distance-to-go">
-        12
+      <div class="dial-data dial-distance-to-go" #distanceToGoContainer>
+        <span [fittext]="true" [activateOnResize]="true" [container]="distanceToGoContainer">12</span>
+      </div>
+      <div class="dial-unit">
+        Mn
       </div>
     </div>
     <div class="dial">
       <div class="dial-title">
         {{ 'gps.dial-title.eta'|translate }}
       </div>
-      <div class="dial-data dial-eta">
-        10:12
+      <div class="dial-data dial-eta" #etaContainer>
+        <span [fittext]="true" [activateOnResize]="true" [container]="etaContainer">10:12</span>
       </div>
     </div>
   </div>
 
   <div class="right-side">
-    <div class="speed">
-
+    <div class="dial">
+      <div class="dial-title">
+        {{ 'gps.dial-title.speed'|translate }}
+      </div>
+      <div class="dial-data dial-speed" #speedContainer>
+        <span [fittext]="true" [activateOnResize]="true" [container]="speedContainer">100,2</span>
+      </div>
+      <div class="dial-unit">
+        Kts
+      </div>
     </div>
-    <div class="angle">
-
+    <div class="dial">
     </div>
   </div>
 

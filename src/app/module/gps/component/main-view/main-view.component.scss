@@ -14,21 +14,37 @@
   .dial-data {
     text-align: center;
     flex-grow: 1;
+    line-height: normal;
+
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    // font-family: digit-3;
+
+    > span {
+      // flex-grow: 1;
+      // font-family: Times;
+    }
 
     &.dial-coordinates {
-      font-size: 20px;
+      font-size: 1.5rem;
     }
 
     &.dial-distance-to-go {
-      font-size: 50px;
+      font-size: 3.5rem;
     }
 
     &.dial-eta {
-      font-size: 50px;
+      font-size: 3.5rem;
     }
+  }
+
+  .dial-unit {
+    //@extend .text-muted;
+color: grey;
+    font-size: 12px;
+    text-align: right;
+    padding-right: 5px;
   }
 }
 
@@ -57,13 +73,13 @@ div.d-flex {
     width: 50%;
     border-left: solid 1px white;
 
-    .speed {
+    .dial:first-child {
       @extend .dial;
       height: 60%;
       border-bottom: solid 1px white;
     }
 
-    .angle {
+    .dial:last-child {
       @extend .dial;
       height: 40%;
     }

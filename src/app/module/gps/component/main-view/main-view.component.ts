@@ -9,7 +9,5 @@ export class MainViewComponent implements OnInit {
 
   public constructor() { }
 
-  public ngOnInit(): void {
-
-  }
+  public ngOnInit(): void {}
 }

@@ -5018,6 +5018,10 @@ ng-bootstrap@^1.6.3:
   dependencies:
     moment "2.18.1"
 
+ng2-fittext@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ng2-fittext/-/ng2-fittext-1.1.1.tgz#d991685cf03c547becaaff4b415a15723fed9025"
+
 nice-try@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.4.tgz#d93962f6c52f2c1558c0fbda6d512819f1efe1c4"
