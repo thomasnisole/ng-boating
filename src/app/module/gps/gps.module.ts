@@ -3,6 +3,7 @@ import { SatellitesViewComponent } from './component/satellites-view/satellites-
 import {GpsRoutingModule} from './gps-routing.module';
 import { MainViewComponent } from './component/main-view/main-view.component';
 import {SharedModule} from '../shared/shared.module';
+import { DialComponent } from './component/dial/dial.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import {SharedModule} from '../shared/shared.module';
   ],
   declarations: [
     SatellitesViewComponent,
-    MainViewComponent
+    MainViewComponent,
+    DialComponent
   ]
 })
 export class GpsModule { }

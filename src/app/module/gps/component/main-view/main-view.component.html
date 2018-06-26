@@ -1,52 +1,24 @@
 <div class="d-flex h-100">
-
   <div class="left-side">
-    <div class="dial">
-      <div class="dial-title">
-        {{ 'gps.dial-title.coordinates'|translate }}
-      </div>
-      <div class="dial-data dial-coordinates" #coordinatesContainer>
-        <span [fittext]="true" [activateOnResize]="true" [container]="coordinatesContainer">
-          48° 06' 47.8267" N<br/>
-          01° 37' 27.5617" W
-        </span>
-      </div>
-    </div>
-    <div class="dial">
-      <div class="dial-title">
-        {{ 'gps.dial-title.distance-to-go'|translate }}
-      </div>
-      <div class="dial-data dial-distance-to-go" #distanceToGoContainer>
-        <span [fittext]="true" [activateOnResize]="true" [container]="distanceToGoContainer">12</span>
-      </div>
-      <div class="dial-unit">
-        Mn
-      </div>
-    </div>
-    <div class="dial">
-      <div class="dial-title">
-        {{ 'gps.dial-title.eta'|translate }}
-      </div>
-      <div class="dial-data dial-eta" #etaContainer>
-        <span [fittext]="true" [activateOnResize]="true" [container]="etaContainer">10:12</span>
-      </div>
-    </div>
+    <app-dial [header]="'gps.dial-title.coordinates'|translate">
+      48° 06' 47.8267" N<br/>
+      01° 37' 27.5617" W
+    </app-dial>
+    <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [footer]="'Mn'">
+      --
+    </app-dial>
+    <app-dial [header]="'gps.dial-title.eta'|translate">
+      --:--
+    </app-dial>
   </div>
 
   <div class="right-side">
-    <div class="dial">
-      <div class="dial-title">
-        {{ 'gps.dial-title.speed'|translate }}
-      </div>
-      <div class="dial-data dial-speed" #speedContainer>
-        <span [fittext]="true" [activateOnResize]="true" [container]="speedContainer">100,2</span>
-      </div>
-      <div class="dial-unit">
-        Kts
-      </div>
-    </div>
-    <div class="dial">
+    <app-dial [header]="'gps.dial-title.speed'|translate" [footer]="'Kts'">
+      7.5
+    </app-dial>
+    <div class="d-flex">
+      <app-dial [header]="'Cap'">250°</app-dial>
+      <app-dial [header]="'Cap à suivre'">---</app-dial>
     </div>
   </div>
-
 </div>

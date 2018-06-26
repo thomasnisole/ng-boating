@@ -1,53 +1,5 @@
 @import "~node_modules/bootstrap/scss/bootstrap";
 
-.dial {
-  display: flex;
-  flex-direction: column;
-
-  .dial-title {
-    @extend .text-muted;
-
-    font-size: 12px;
-    padding-left: 5px;
-  }
-
-  .dial-data {
-    text-align: center;
-    flex-grow: 1;
-    line-height: normal;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    // font-family: digit-3;
-
-    > span {
-      // flex-grow: 1;
-      // font-family: Times;
-    }
-
-    &.dial-coordinates {
-      font-size: 1.5rem;
-    }
-
-    &.dial-distance-to-go {
-      font-size: 3.5rem;
-    }
-
-    &.dial-eta {
-      font-size: 3.5rem;
-    }
-  }
-
-  .dial-unit {
-    //@extend .text-muted;
-color: grey;
-    font-size: 12px;
-    text-align: right;
-    padding-right: 5px;
-  }
-}
-
 div.d-flex {
   color: white;
 
@@ -57,7 +9,7 @@ div.d-flex {
 
     width: 50%;
 
-    > div {
+    /deep/ div.dial {
       height: 33%;
 
       &:not(:last-child) {
@@ -73,15 +25,24 @@ div.d-flex {
     width: 50%;
     border-left: solid 1px white;
 
-    .dial:first-child {
-      @extend .dial;
-      height: 60%;
+    /deep/ .dial:first-child {
+      height: 66%;
       border-bottom: solid 1px white;
     }
 
-    .dial:last-child {
-      @extend .dial;
-      height: 40%;
+    > .d-flex {
+      height: 33%;
+
+      /deep/ .dial:first-child {
+        height: 100%;
+        width: 50%;
+        border-right: solid 1px white;
+      }
+
+      /deep/ .dial:last-child {
+        height: 100%;
+        width: 50%;
+      }
     }
   }
 }

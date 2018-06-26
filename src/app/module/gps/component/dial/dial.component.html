@@ -1,0 +1,13 @@
+<div class="dial">
+  <div class="dial-header">
+    {{ header }}
+  </div>
+  <div class="dial-body" #bodyContainer>
+    <span [fittext]="true" [activateOnResize]="true" [container]="bodyContainer">
+      <ng-content></ng-content>
+    </span>
+  </div>
+  <div class="dial-footer" *ngIf="footer">
+    {{ footer }}
+  </div>
+</div>

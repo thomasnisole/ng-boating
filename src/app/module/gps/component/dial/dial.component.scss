@@ -1,0 +1,33 @@
+.dial {
+  display: flex;
+  flex-direction: column;
+
+  .dial-header {
+    color: grey;
+    font-size: 12px;
+    padding-left: 5px;
+  }
+
+  .dial-body {
+    text-align: center;
+    flex-grow: 1;
+    line-height: normal;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // font-family: digit-3;
+
+    > span {
+      // flex-grow: 1;
+      // font-family: Times;
+    }
+  }
+
+  .dial-footer {
+    color: grey;
+    font-size: 12px;
+    text-align: right;
+    padding-right: 5px;
+  }
+}
