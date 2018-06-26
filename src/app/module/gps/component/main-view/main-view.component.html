@@ -1,24 +1,20 @@
 <div class="d-flex h-100">
   <div class="left-side">
-    <app-dial [header]="'gps.dial-title.coordinates'|translate" class="border-warning">
-      48° 06' 47.8267" N<br/>
-      01° 37' 27.5617" W
+    <app-dial [header]="'gps.dial-title.coordinates'|translate" [defaultBody]="'----'" [body]="coordAsString" class="border-warning">
     </app-dial>
-    <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [footer]="'Mn'" class="border-danger">
-      --
+    <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [defaultBody]="'--'" [footer]="'Mn'" class="border-danger">
     </app-dial>
-    <app-dial [header]="'gps.dial-title.eta'|translate" class="border-secondary">
-      --:--
+    <app-dial [header]="'gps.dial-title.eta'|translate" [defaultBody]="'--:--'" class="border-secondary">
     </app-dial>
   </div>
 
   <div class="right-side">
-    <app-dial [header]="'gps.dial-title.speed'|translate" [footer]="'Kts'" class="border-success">
-      7.5
+    <app-dial [header]="'gps.dial-title.speed'|translate" [defaultBody]="0" [body]="rmcData?.speedKnots" [footer]="'Kts'" class="border-success">
     </app-dial>
     <div class="d-flex">
-      <app-dial [header]="'Cap'" class="border-primary">250°</app-dial>
-      <app-dial [header]="'Cap à suivre'" class="border-white">---</app-dial>
+      <app-dial [header]="'Cap'" [defaultBody]="'---'" [body]="rmcData? rmcData.trackTrue + '°' : ''" class="border-primary">
+      </app-dial>
+      <app-dial [header]="'Cap à suivre'" [defaultBody]="'---'" class="border-white"></app-dial>
     </div>
   </div>
 </div>

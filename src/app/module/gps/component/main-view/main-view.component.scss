@@ -6,7 +6,7 @@ div.left-side {
 
   width: 50%;
 
-  app-dial {
+  > app-dial {
     height: calc(100% / 3);
   }
 }

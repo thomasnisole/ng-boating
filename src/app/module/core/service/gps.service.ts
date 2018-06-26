@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, Observer, of} from 'rxjs/index';
 import {Port} from '../model/port.model';
 import {parsers, SerialPort, serialPortObjects} from '../../../../serial-port';
+import {GSVPacket, Packet, parseNmeaSentence, RMCPacket} from 'nmea-simple';
 
 @Injectable()
 export class GpsService {
@@ -74,10 +75,29 @@ export class GpsService {
     });
   }
 
-  public getData(): Observable<string> {
+  public getDataAsString(): Observable<string> {
     return Observable.create((observer: Observer<string>) => {
       serialPortObjects.parser.on('data', (line: string) => {
         observer.next(line);
+      });
+    });
+  }
+
+  public getGSVData(): Observable<GSVPacket> {
+    return Observable.create((observer: Observer<GSVPacket>) => {
+      serialPortObjects.parser.on('data', (line: string) => {
+        observer.next(<GSVPacket>parseNmeaSentence(line));
+      });
+    });
+  }
+
+  public getRMCData(): Observable<RMCPacket> {
+    return Observable.create((observer: Observer<RMCPacket>) => {
+      serialPortObjects.parser.on('data', (line: string) => {
+        const packet: Packet = parseNmeaSentence(line);
+        if (packet.sentenceId === 'RMC') {
+          observer.next(<RMCPacket>packet);
+        }
       });
     });
   }

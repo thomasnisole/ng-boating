@@ -63,7 +63,7 @@ class Readline {
   public emit(eventName: string): void {
     switch (eventName) {
       case 'data':
-        const lines: string[] = fs.readFileSync('./src/data.json').toString().split('\r\n');
+        const lines: string[] = fs.readFileSync('./src/data.nmea').toString().split('\r\n');
         if (this.index === lines.length) {
           this.index = 0;
         }
