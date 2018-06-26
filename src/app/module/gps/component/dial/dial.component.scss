@@ -1,6 +1,7 @@
-.dial {
+:host {
   display: flex;
   flex-direction: column;
+  border: 6px solid;
 
   .dial-header {
     color: grey;
@@ -12,6 +13,7 @@
     text-align: center;
     flex-grow: 1;
     line-height: normal;
+    color: white;
 
     display: flex;
     flex-direction: column;

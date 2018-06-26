@@ -1,48 +1,37 @@
 @import "~node_modules/bootstrap/scss/bootstrap";
 
-div.d-flex {
-  color: white;
+div.left-side {
+  flex-grow: 1;
+  flex-direction: column;
 
-  div.left-side {
-    flex-grow: 1;
-    flex-direction: column;
+  width: 50%;
 
-    width: 50%;
+  app-dial {
+    height: calc(100% / 3);
+  }
+}
 
-    /deep/ div.dial {
-      height: 33%;
+div.right-side {
+  flex-grow: 1;
+  flex-direction: column;
 
-      &:not(:last-child) {
-        border-bottom: solid 1px white;
-      }
-    }
+  width: 50%;
+
+  > app-dial:first-child {
+    height: calc((100% / 3) * 2);
   }
 
-  div.right-side {
-    flex-grow: 1;
-    flex-direction: column;
+  > .d-flex {
+    height: calc(100% / 3);
 
-    width: 50%;
-    border-left: solid 1px white;
-
-    /deep/ .dial:first-child {
-      height: 66%;
-      border-bottom: solid 1px white;
+    app-dial:first-child {
+      height: 100%;
+      width: 50%;
     }
 
-    > .d-flex {
-      height: 33%;
-
-      /deep/ .dial:first-child {
-        height: 100%;
-        width: 50%;
-        border-right: solid 1px white;
-      }
-
-      /deep/ .dial:last-child {
-        height: 100%;
-        width: 50%;
-      }
+    app-dial:last-child {
+      height: 100%;
+      width: 50%;
     }
   }
 }

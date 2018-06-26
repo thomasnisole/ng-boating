@@ -1,24 +1,24 @@
 <div class="d-flex h-100">
   <div class="left-side">
-    <app-dial [header]="'gps.dial-title.coordinates'|translate">
+    <app-dial [header]="'gps.dial-title.coordinates'|translate" class="border-warning">
       48° 06' 47.8267" N<br/>
       01° 37' 27.5617" W
     </app-dial>
-    <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [footer]="'Mn'">
+    <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [footer]="'Mn'" class="border-danger">
       --
     </app-dial>
-    <app-dial [header]="'gps.dial-title.eta'|translate">
+    <app-dial [header]="'gps.dial-title.eta'|translate" class="border-secondary">
       --:--
     </app-dial>
   </div>
 
   <div class="right-side">
-    <app-dial [header]="'gps.dial-title.speed'|translate" [footer]="'Kts'">
+    <app-dial [header]="'gps.dial-title.speed'|translate" [footer]="'Kts'" class="border-success">
       7.5
     </app-dial>
     <div class="d-flex">
-      <app-dial [header]="'Cap'">250°</app-dial>
-      <app-dial [header]="'Cap à suivre'">---</app-dial>
+      <app-dial [header]="'Cap'" class="border-primary">250°</app-dial>
+      <app-dial [header]="'Cap à suivre'" class="border-white">---</app-dial>
     </div>
   </div>
 </div>
