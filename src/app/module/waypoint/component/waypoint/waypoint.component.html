@@ -1,0 +1,30 @@
+<form *ngIf="waypoint$|async as waypoint">
+  <div class="form-group row">
+    <label for="name" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.name'|translate }}</label>
+    <div class="col-8">
+      <input type="text" name="name" id="name" class="form-control" [(ngModel)]="waypoint.name"
+             placeholder="{{ 'waypoint.form.label.name'|translate }}" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="latitude" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.latitude'|translate }}</label>
+    <div class="col-8">
+      <input type="text" name="latitude" id="latitude" class="form-control" [(ngModel)]="waypoint.lat"
+             placeholder="{{ 'waypoint.form.label.latitude'|translate }}" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="longitude" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.longitude'|translate }}</label>
+    <div class="col-8">
+      <input type="text" name="longitude" id="longitude" class="form-control" [(ngModel)]="waypoint.lng"
+             placeholder="{{ 'waypoint.form.label.longitude'|translate }}" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="description" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.description'|translate }}</label>
+    <div class="col-8">
+      <textarea  name="description" id="description" class="form-control" [(ngModel)]="waypoint.description" row="5"
+                placeholder="{{ 'waypoint.form.label.description'|translate }}"></textarea>
+    </div>
+  </div>
+</form>

@@ -5,4 +5,6 @@ export class UserPreferences {
   public port: string;
 
   public baudRate: number;
+
+  public waypointsFileName: string;
 }

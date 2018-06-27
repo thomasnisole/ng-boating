@@ -1,19 +1,25 @@
 <ul class="list-unstyled">
   <li class="bg-primary">
-    <a [routerLink]="['/app']">
-      <i class="fa fa-compass"></i>
+    <a [routerLink]="['/app', 'gps']">
+      <span class="fa fa-compass"></span>
       <span>{{ 'menu.gps'|translate }}</span>
+    </a>
+  </li>
+  <li class="bg-danger">
+    <a [routerLink]="['/app', 'waypoints']">
+      <span class="fa fa-map-marker"></span>
+      <span>{{ 'menu.waypoints'|translate }}</span>
     </a>
   </li>
   <li class="bg-warning">
     <a>
-      <i class="fa fa-calendar"></i>
+      <span class="fa fa-calendar"></span>
       <span>{{ 'menu.tide'|translate }}</span>
     </a>
   </li>
   <li class="bg-secondary">
     <a [routerLink]="['/app','settings']">
-      <i class="fa fa-cog"></i>
+      <span class="fa fa-cog"></span>
       <span>{{ 'menu.settings'|translate }}</span>
     </a>
   </li>

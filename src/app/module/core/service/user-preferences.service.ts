@@ -11,7 +11,7 @@ export const fs = remote.require('fs');
 })
 export class UserPreferencesService {
 
-  private filePath: string = os.homedir() + '/.ng-boating';
+  public filePath: string = os.homedir() + '/.ng-boating';
 
   private fileName: string = 'user-preferences.json';
 

@@ -1,6 +1,7 @@
 {
   "menu": {
     "gps": "GPS",
+    "waypoints": "Waypoints",
     "tide": "Marée",
     "settings": "Réglages"
   },
@@ -35,6 +36,17 @@
       "speed": "Vitesse",
       "angle": "Cap",
       "angle-to-follow": "Cap à suivre"
+    }
+  },
+  "waypoint": {
+    "search": "Rechercher",
+    "form": {
+      "label": {
+        "name": "Nom",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "description": "Description"
+      }
     }
   }
 }

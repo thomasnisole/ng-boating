@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: './module/gps/gps.module#GpsModule'
       },
       {
+        path: 'waypoints',
+        loadChildren: './module/waypoint/waypoint.module#WaypointModule'
+      },
+      {
         path: 'settings',
         loadChildren: './module/settings/settings.module#SettingsModule'
       }
