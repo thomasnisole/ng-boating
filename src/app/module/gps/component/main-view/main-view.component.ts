@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {GpsService} from '../../../core/service/gps.service';
 import {UserPreferencesService} from '../../../core/service/user-preferences.service';
 import {mergeMap} from 'rxjs/operators';
@@ -17,7 +17,10 @@ export class MainViewComponent implements OnInit {
 
   public coordAsString: string = null;
 
-  public constructor(private userPreferencesService: UserPreferencesService, private gpsService: GpsService) {}
+  public constructor(
+    private userPreferencesService: UserPreferencesService,
+    private gpsService: GpsService,
+    private cdr: ChangeDetectorRef) {}
 
   /**
    * @TODO: ATTENTION, IL FAUT FORKER LE FIT TEXT POUR AJOUTER LE DONE = FALSE;
@@ -45,6 +48,8 @@ export class MainViewComponent implements OnInit {
             )
             .replace(/\d{1,3}[°]/g, (found: string) => leftPad(found, 4, '0'))
             .replace(/\d{1,2}[.]/g, (found: string) => leftPad(found, 3, '0'));
+
+          this.cdr.detectChanges();
         } else {
           this.coordAsString = null;
         }
