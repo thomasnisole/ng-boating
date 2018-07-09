@@ -10,6 +10,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {SharedModule} from './module/shared/shared.module';
+import {SocketIoModule} from 'ngx-socket-io';
+import {AppGuardService} from './service/app-guard.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,6 +28,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     CoreModule,
     SharedModule,
+    SocketIoModule.forRoot({
+      url: 'http://localhost:80'
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -34,7 +39,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [],
+  providers: [
+    AppGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

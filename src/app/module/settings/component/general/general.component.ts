@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {UserPreferencesService} from '../../../core/service/user-preferences.service';
+import {UserPreferences} from '../../../core/model/user-preferences.model';
+import {tap} from 'rxjs/internal/operators';
+import {Observable} from 'rxjs/index';
 
 @Component({
   selector: 'app-general',
@@ -9,19 +12,23 @@ import {UserPreferencesService} from '../../../core/service/user-preferences.ser
 })
 export class GeneralComponent implements OnInit {
 
-  public currentLanguage: string = '';
+  public userPreferences: UserPreferences = null;
+
+  public userPreferences$: Observable<UserPreferences>;
 
   public constructor(
     private translateService: TranslateService,
-    private userPreferencesService: UserPreferencesService) {
-    this.currentLanguage = this.translateService.currentLang;
+    private userPreferencesService: UserPreferencesService) {}
+
+  public ngOnInit(): void {
+    this.userPreferences$ = this.userPreferencesService.find().pipe(tap(
+      (userPreferences: UserPreferences) => this.userPreferences = userPreferences
+    ));
   }
 
-  public ngOnInit(): void {}
-
   public onLanguageChange(): void {
-    this.translateService.use(this.currentLanguage);
-    this.userPreferencesService.preferences.language = this.currentLanguage;
-    this.userPreferencesService.save();
+    this.userPreferencesService.update(this.userPreferences).subscribe(
+      () => this.translateService.use(this.userPreferences.language)
+    );
   }
 }

@@ -1,36 +1,42 @@
 import { Injectable } from '@angular/core';
 import {UserPreferences} from '../model/user-preferences.model';
 import {environment} from '../../../../environments/environment';
+import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {catchError, map, mergeMap, share, tap} from 'rxjs/internal/operators';
+import {EMPTY, Observable, of} from 'rxjs/index';
 
-const remote = (<any>window).require('electron').remote;
-export const os = remote.require('os');
-export const fs = remote.require('fs');
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserPreferencesService {
 
-  public filePath: string = os.homedir() + '/.ng-boating';
+  private userPreferences: UserPreferences;
 
-  private fileName: string = 'user-preferences.json';
+  public constructor(private http: HttpClient) {}
 
-  public preferences: UserPreferences;
-
-  public constructor() {
-    if (fs.existsSync(this.filePath + '/' + this.fileName)) {
-      this.preferences = <UserPreferences>JSON.parse(fs.readFileSync(this.filePath + '/' + this.fileName));
-    } else {
-      this.preferences = environment.defaultUserPreferences;
-      this.save();
+  public find(): Observable<UserPreferences> {
+    if (this.userPreferences) {
+      return of(this.userPreferences);
     }
+
+    return this.http
+      .get('http://localhost:80/user-preferences')
+      .pipe(
+        map((response: HttpResponse<UserPreferences>) => response),
+        catchError((err: HttpErrorResponse, caught: Observable<UserPreferences>) => {
+          if (err.status === 404) {
+            return this.update(environment.defaultUserPreferences).pipe(
+              mergeMap(() => caught)
+            );
+          }
+
+          return EMPTY;
+        }),
+        tap((userPreferences: UserPreferences) => this.userPreferences = userPreferences)
+      );
   }
 
-  public save(): void {
-    if (!fs.existsSync(this.filePath)) {
-      fs.mkdir(this.filePath);
-    }
-
-    fs.writeFileSync(this.filePath + '/' + this.fileName, JSON.stringify(this.preferences));
+  public update(userPreferences: UserPreferences): Observable<any> {
+    return this.http.post('http://localhost:80/user-preferences', userPreferences).pipe(
+      tap(() => this.userPreferences = null)
+    );
   }
 }

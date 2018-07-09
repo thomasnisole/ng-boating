@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {UserPreferencesService} from '../core/service/user-preferences.service';
 import {Ng2FittextModule} from 'ng2-fittext';
+import {UserPreferences} from '../core/model/user-preferences.model';
 
 @NgModule({
   imports: [
@@ -21,10 +22,4 @@ import {Ng2FittextModule} from 'ng2-fittext';
     Ng2FittextModule
   ]
 })
-export class SharedModule {
-
-  public constructor(translate: TranslateService, userPreferencesService: UserPreferencesService) {
-    translate.setDefaultLang(userPreferencesService.preferences.language);
-    translate.use(userPreferencesService.preferences.language);
-  }
-}
+export class SharedModule {}

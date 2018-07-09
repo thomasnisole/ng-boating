@@ -1,9 +1,9 @@
-<form>
+<form *ngIf="userPreferences$|async">
   <div class="form-group row">
     <label for="language" class="col-4 col-form-label text-light">{{ 'settings.general.label.language'|translate }}</label>
     <div class="col-8">
       <select class="form-control" id="language" name="language"
-              [(ngModel)]="currentLanguage" (change)="onLanguageChange()">
+              [(ngModel)]="userPreferences.language" (change)="onLanguageChange()">
         <option value="fr">{{ 'settings.general.language.fr'|translate }}</option>
         <option value="en">{{ 'settings.general.language.en'|translate }}</option>
       </select>

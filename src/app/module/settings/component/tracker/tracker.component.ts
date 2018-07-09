@@ -1,10 +1,12 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Port} from '../../../core/model/port.model';
 import {GpsService} from '../../../core/service/gps.service';
 import {UserPreferencesService} from '../../../core/service/user-preferences.service';
 import {environment} from '../../../../../environments/environment';
-import {Subscription} from 'rxjs/index';
+import {EMPTY, Observable, of, Subscription} from 'rxjs/index';
 import {TranslateService} from '@ngx-translate/core';
+import {catchError, map, mergeMap, tap} from 'rxjs/internal/operators';
+import {UserPreferences} from '../../../core/model/user-preferences.model';
 
 @Component({
   selector: 'app-tracker',
@@ -13,17 +15,15 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class TrackerComponent implements OnInit, OnDestroy {
 
-  public currentPort: string = null;
+  private userPreferenceSubscription: Subscription;
 
-  public currentBaudRate: string = null;
+  public userPreferences: UserPreferences;
 
-  public ports: Port[];
+  public ports$: Observable<Port[]>;
 
   public baudRates: number[] = [];
 
   public logs: string[] = [];
-
-  private findAllPortsSubscription: Subscription;
 
   private openSubscription: Subscription;
 
@@ -31,21 +31,54 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
   public constructor(
     private gpsService: GpsService,
-    private cdr: ChangeDetectorRef,
     private userPreferencesService: UserPreferencesService,
     private translateService: TranslateService) {
     this.baudRates = environment.baudRates;
-    this.currentPort = this.userPreferencesService.preferences.port;
-    this.currentBaudRate = this.userPreferencesService.preferences.baudRate.toString();
   }
 
   public ngOnInit(): void {
-    this.refresh();
+    this.userPreferenceSubscription = this.userPreferencesService
+      .find()
+      .subscribe((userPreferences: UserPreferences) => {
+        this.userPreferences = userPreferences;
+
+        this.refresh();
+      });
+  }
+
+  public refresh(): void {
+    this.ports$ = this.gpsService.findAllPorts().pipe(
+      mergeMap((ports: Port[]) => {
+        if (ports.length > 1 || ports.length < 1) {
+          return of(ports);
+        }
+
+        if (ports[0].name === this.userPreferences.port) {
+          return of(ports);
+        }
+
+        this.userPreferences.port = ports[0].name;
+
+        return this.userPreferencesService.update(this.userPreferences).pipe(map(() => ports));
+      }),
+      tap(() => {
+        if (this.userPreferences.port) {
+          this.connect();
+        }
+      }),
+      catchError((err) => {
+        console.error(err);
+        this.logs.push(err);
+
+        return EMPTY;
+      })
+    );
   }
 
   public ngOnDestroy(): void {
-    if (this.findAllPortsSubscription) {
-      this.findAllPortsSubscription.unsubscribe();
+    console.log('connardd');
+    if (this.userPreferenceSubscription) {
+      this.userPreferenceSubscription.unsubscribe();
     }
 
     if (this.openSubscription) {
@@ -57,68 +90,38 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
   }
 
-  public refresh(): void {
-    this.ports = [];
-
-    this.gpsService
-      .findAllPorts()
-      .subscribe(
-        (ports: Port[]) => {
-          this.ports = ports;
-
-          if (ports.length === 1) {
-            this.currentPort = ports[0].name;
-            this.userPreferencesService.preferences.port = this.currentPort;
-            this.userPreferencesService.save();
-          }
-
-          if (this.currentPort) {
-            this.connect();
-          }
-        },
-        (err) => {
-          this.logs.push(err);
-        }
-      );
-  }
-
   public onPortChange(): void {
-    this.userPreferencesService.preferences.port = this.currentPort;
-    this.userPreferencesService.save();
+    this.userPreferencesService.update(this.userPreferences);
 
     this.connect();
   }
 
   public onBaudRateChange(): void {
-    this.userPreferencesService.preferences.baudRate = parseInt(this.currentBaudRate, 10);
-    this.userPreferencesService.save();
+    this.userPreferencesService.update(this.userPreferences);
 
     this.connect();
   }
 
   private connect(): void {
-    if (!this.currentBaudRate) {
+    if (!this.userPreferences.baudRate) {
       return;
     }
 
-    if (!this.currentPort) {
+    if (!this.userPreferences.port) {
       return;
     }
 
-    this.openSubscription = this.gpsService.open(parseInt(this.currentBaudRate, 10), this.currentPort).subscribe(
+    this.openSubscription = this.gpsService.open(this.userPreferences.baudRate, this.userPreferences.port).subscribe(
       () => {
-        this.logs.push(this.translateService.instant('settings.tracker.label.connected-on-port') + this.currentPort);
+        this.logs.push(
+          this.translateService.instant('settings.tracker.label.connected-on-port') + this.userPreferences.port
+        );
         this.getDataSubscription = this.gpsService.getDataAsString().subscribe(
-          (line: string) => {
-            this.logs.push(line);
-            this.cdr.detectChanges();
-          }
+          (line) => this.logs.push(line)
         );
       },
       (err) => {
-        this.logs.push(err.name + ' : ' + err.message);
-
-        console.log(this.logs);
+        this.logs.push(err);
       }
     );
   }

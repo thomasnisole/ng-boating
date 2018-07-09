@@ -1,39 +1,41 @@
-<form>
-  <div class="form-group row">
-    <label for="port" class="col-4 col-form-label text-light">{{ 'settings.tracker.label.port'|translate }}</label>
-    <div class="col-8 input-group">
-      <select class="form-control" id="port" name="port"
-              [(ngModel)]="currentPort" (change)="onPortChange()">
-        <option *ngFor="let port of ports" [value]="port.name">
-          {{ port.name }}
-        </option>
-      </select>
-      <div class="input-group-append">
-        <button class="btn btn-sm" type="button" (click)="refresh()">
-          <i class="fa fa-refresh"></i>
-        </button>
+<ng-template [ngIf]="userPreferences">
+  <form>
+    <div class="form-group row">
+      <label for="port" class="col-4 col-form-label text-light">{{ 'settings.tracker.label.port'|translate }}</label>
+      <div class="col-8 input-group">
+        <select class="form-control" id="port" name="port"
+                [(ngModel)]="userPreferences.port" (change)="onPortChange()">
+          <option *ngFor="let port of ports$|async" [value]="port.name">
+            {{ port.name }}
+          </option>
+        </select>
+        <div class="input-group-append">
+          <button class="btn btn-sm" type="button" (click)="refresh()">
+            <i class="fa fa-refresh"></i>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="baud-rate" class="col-4 col-form-label text-light">{{ 'settings.tracker.label.baud-rate'|translate }}</label>
-    <div class="col-8">
-      <select class="form-control" id="baud-rate" name="baud-rate"
-              [(ngModel)]="currentBaudRate" (change)="onBaudRateChange()">
-        <option *ngFor="let baudRate of baudRates" [value]="baudRate">
-          {{ baudRate }}
-        </option>
-      </select>
+    <div class="form-group row">
+      <label for="baud-rate" class="col-4 col-form-label text-light">{{ 'settings.tracker.label.baud-rate'|translate }}</label>
+      <div class="col-8">
+        <select class="form-control" id="baud-rate" name="baud-rate"
+                [(ngModel)]="userPreferences.baudRate" (change)="onBaudRateChange()">
+          <option *ngFor="let baudRate of baudRates" [value]="baudRate">
+            {{ baudRate }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </form>
+
+
+  <div class="d-flex flex-column">
+    <span class="text-light">{{ 'settings.tracker.label.logs'|translate }}</span>
+    <div class="logs">
+      <p class="log text-success m-0" *ngFor="let log of logs">
+        {{ log }}
+      </p>
     </div>
   </div>
-</form>
-
-
-<div class="d-flex flex-column">
-  <span class="text-light">{{ 'settings.tracker.label.logs'|translate }}</span>
-  <div class="logs">
-    <p class="log text-success m-0" *ngFor="let log of logs" [ngClass]="{'text-danger': log.toLowerCase().startsWith('error')}">
-      {{ log }}
-    </p>
-  </div>
-</div>
+</ng-template>

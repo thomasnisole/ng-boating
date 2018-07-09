@@ -2,37 +2,46 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {MenuComponent} from './component/menu/menu.component';
 import {LayoutComponent} from './component/layout/layout.component';
+import {AppGuardService} from './service/app-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'menu'
-  },
-  {
-    path: 'menu',
-    component: MenuComponent
-  },
-  {
-    path: 'app',
-    component: LayoutComponent,
+    canActivate: [
+      AppGuardService
+    ],
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'gps'
+        redirectTo: 'menu'
       },
       {
-        path: 'gps',
-        loadChildren: './module/gps/gps.module#GpsModule'
+        path: 'menu',
+        component: MenuComponent
       },
       {
-        path: 'waypoints',
-        loadChildren: './module/waypoint/waypoint.module#WaypointModule'
-      },
-      {
-        path: 'settings',
-        loadChildren: './module/settings/settings.module#SettingsModule'
+        path: 'app',
+        component: LayoutComponent,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'gps'
+          },
+          {
+            path: 'gps',
+            loadChildren: './module/gps/gps.module#GpsModule'
+          },
+          {
+            path: 'waypoints',
+            loadChildren: './module/waypoint/waypoint.module#WaypointModule'
+          },
+          {
+            path: 'settings',
+            loadChildren: './module/settings/settings.module#SettingsModule'
+          }
+        ]
       }
     ]
   }
