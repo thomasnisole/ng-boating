@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import {Observable, Observer, of} from 'rxjs/index';
 import {HttpClient} from '@angular/common/http';
 import {Port} from '../model/port.model';
-import {map} from 'rxjs/internal/operators';
+import {map, tap} from 'rxjs/internal/operators';
 import {Socket} from 'ngx-socket-io';
 
 @Injectable()
 export class NmeaService {
-
-  private isOpen: boolean = false;
 
   private getData$: Observable<string>;
 
@@ -27,21 +25,27 @@ export class NmeaService {
   }
 
   public close(): Observable<boolean> {
-    return of(false);
+    return new Observable((observer: Observer<boolean>) => this.socket.emit('close', () => observer.next(false)));
   }
 
   public open(baudRate: number, port: string): Observable<boolean> {
-    return new Observable((observer: Observer<boolean>) => this.socket
-      .emit('open', {baudRate: baudRate, port: port}, (err) => {
-        if (err) {
-          observer.error(err);
-        } else {
-          observer.next(true);
-        }
+    return new Observable((observer: Observer<boolean>) => {
+      this.socket.on('close', () => {
+        observer.error('Close port');
+      });
+      this.socket.emit(
+        'open',
+        {baudRate: baudRate, port: port},
+        (err) => {
+          if (err) {
+            observer.error(err);
+          } else {
+            observer.next(true);
+          }
 
-        observer.complete();
-      })
-    );
+          observer.complete();
+        });
+    });
   }
 
   public getDataAsString(): Observable<string> {

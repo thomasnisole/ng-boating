@@ -114,7 +114,7 @@
     symbol-observable "^1.2.0"
     yargs-parser "^10.0.0"
 
-"@angular/common@^6.0.3":
+"@angular/common@>=4.0.0 || <6.0.0", "@angular/common@^6.0.3":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-6.0.4.tgz#e3d194a1bb1e143044774488d610437a982179fa"
   dependencies:
@@ -129,13 +129,13 @@
     reflect-metadata "^0.1.2"
     tsickle "^0.29.0"
 
-"@angular/compiler@^6.0.3":
+"@angular/compiler@>=4.0.0 || <6.0.0", "@angular/compiler@^6.0.3":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-6.0.4.tgz#86d3adc2c915ee98aa8e00c542c2ef1c09f9c61f"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/core@^6.0.3", "@angular/core@^6.0.4":
+"@angular/core@>=4.0.0 || <6.0.0", "@angular/core@^6.0.3", "@angular/core@^6.0.4":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-6.0.4.tgz#80b19624493126b6c7e3a180a33dee92c84b4bd6"
   dependencies:
@@ -157,13 +157,13 @@
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-6.0.4.tgz#4a19c1734d28590d987268090b16b12e71a67c30"
 
-"@angular/platform-browser-dynamic@^6.0.3":
+"@angular/platform-browser-dynamic@>=4.0.0 || <6.0.0", "@angular/platform-browser-dynamic@^6.0.3":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-6.0.4.tgz#3b86f6b826d45418520da583eb8ba0526f62a4bb"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/platform-browser@^6.0.3":
+"@angular/platform-browser@>=4.0.0 || <6.0.0", "@angular/platform-browser@^6.0.3":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-6.0.4.tgz#3a86890324fd9de37df8d7195fcedf4145eefb3b"
   dependencies:
@@ -1650,9 +1650,9 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
-debug@*, debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8:
-  version "2.6.9"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
+debug@*, debug@^3.1.0, debug@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
     ms "2.0.0"
 
@@ -1668,9 +1668,9 @@ debug@2.3.3:
   dependencies:
     ms "0.7.2"
 
-debug@^3.1.0, debug@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
     ms "2.0.0"
 
@@ -3555,6 +3555,12 @@ json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
+json-typescript-mapper@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/json-typescript-mapper/-/json-typescript-mapper-1.1.3.tgz#f6b1fca2d038611d65b54d7f149f628c5cf0a7da"
+  dependencies:
+    reflect-metadata "^0.1.3"
+
 json3@3.3.2, json3@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.2.tgz#3c0434743df93e2f5c42aee7b19bcb483575f4e1"
@@ -4162,9 +4168,18 @@ ng-bootstrap@^1.6.3:
   dependencies:
     moment "2.18.1"
 
-ng2-fittext@^1.1.1:
+"ng2-fittext@https://github.com/thomasnisole/ng2-fittext#master":
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ng2-fittext/-/ng2-fittext-1.1.1.tgz#d991685cf03c547becaaff4b415a15723fed9025"
+  resolved "https://github.com/thomasnisole/ng2-fittext#7968ddc90257982c438e6b1d8c15a75edec19b2f"
+  dependencies:
+    "@angular/common" ">=4.0.0 || <6.0.0"
+    "@angular/compiler" ">=4.0.0 || <6.0.0"
+    "@angular/core" ">=4.0.0 || <6.0.0"
+    "@angular/platform-browser" ">=4.0.0 || <6.0.0"
+    "@angular/platform-browser-dynamic" ">=4.0.0 || <6.0.0"
+    core-js "^2.4.1"
+    rxjs "^5.0.1"
+    zone.js "0.8.12"
 
 ngx-socket-io@^1.1.1:
   version "1.1.1"
@@ -4576,6 +4591,10 @@ parse-asn1@^5.0.0:
     create-hash "^1.1.0"
     evp_bytestokey "^1.0.0"
     pbkdf2 "^3.0.3"
+
+parse-dms@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/parse-dms/-/parse-dms-0.0.3.tgz#c1c5271b10bfe20633e35a57a33ea42cb5594abc"
 
 parse-glob@^3.0.4:
   version "3.0.4"
@@ -5057,7 +5076,7 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-reflect-metadata@^0.1.10, reflect-metadata@^0.1.2:
+reflect-metadata@^0.1.10, reflect-metadata@^0.1.2, reflect-metadata@^0.1.3:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.12.tgz#311bf0c6b63cd782f228a81abe146a2bfa9c56f2"
 
@@ -5262,6 +5281,12 @@ run-queue@^1.0.0, run-queue@^1.0.3:
 rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
+
+rxjs@^5.0.1:
+  version "5.5.11"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.11.tgz#f733027ca43e3bec6b994473be4ab98ad43ced87"
+  dependencies:
+    symbol-observable "1.0.1"
 
 rxjs@^6.0.0, rxjs@^6.1.0:
   version "6.2.1"
@@ -5967,6 +5992,10 @@ supports-color@^5.1.0, supports-color@^5.3.0, supports-color@^5.4.0:
   dependencies:
     has-flag "^3.0.0"
 
+symbol-observable@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
+
 symbol-observable@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
@@ -6371,6 +6400,10 @@ utils-merge@1.0.1:
 uuid@^3.0.0, uuid@^3.0.1, uuid@^3.1.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
+
+uuid@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.3"
@@ -6779,6 +6812,10 @@ yeast@0.1.2:
 yn@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/yn/-/yn-2.0.0.tgz#e5adabc8acf408f6385fc76495684c88e6af689a"
+
+zone.js@0.8.12:
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.12.tgz#86ff5053c98aec291a0bf4bbac501d694a05cfbb"
 
 zone.js@^0.8.11, zone.js@^0.8.26:
   version "0.8.26"

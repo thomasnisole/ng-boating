@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/index';
-import {GSVPacket, RMCPacket} from 'nmea-simple';
+import {GGAPacket, GSVPacket, parseNmeaSentence, RMCPacket} from 'nmea-simple';
 import {NmeaService} from './nmea.service';
-import {filter, map, tap} from 'rxjs/internal/operators';
-import {decodeSentence as decodeGSVSentence} from 'nmea-simple/dist/codecs/GSV';
-import {decodeSentence as decodeRMCSentence} from 'nmea-simple/dist/codecs/RMC';
+import {filter, map} from 'rxjs/internal/operators';
 import {HttpClient} from '@angular/common/http';
 import {Socket} from 'ngx-socket-io';
 
@@ -15,7 +13,9 @@ export class GpsService extends NmeaService {
 
   private getRMC$: Observable<RMCPacket>;
 
-  public constructor(private socket: Socket, private httpClient: HttpClient) {
+  private getGGA$: Observable<GGAPacket>;
+
+  public constructor(socket: Socket, httpClient: HttpClient) {
     super(socket, httpClient);
   }
 
@@ -23,7 +23,7 @@ export class GpsService extends NmeaService {
     if (!this.getGSV$) {
       this.getGSV$ = this.getDataAsString().pipe(
         filter((line: string) => line.startsWith('$GPGSV')),
-        map((line: string) => decodeGSVSentence(line))
+        map((line: string) => <GSVPacket>parseNmeaSentence(line))
       );
     }
 
@@ -34,10 +34,21 @@ export class GpsService extends NmeaService {
     if (!this.getRMC$) {
       this.getRMC$ = this.getDataAsString().pipe(
         filter((line: string) => line.startsWith('$GPRMC')),
-        map((line: string) => decodeRMCSentence(line)),
+        map((line: string) => <RMCPacket>parseNmeaSentence(line)),
       );
     }
 
     return this.getRMC$;
+  }
+
+  public getGGAData(): Observable<GGAPacket> {
+    if (!this.getGGA$) {
+      this.getGGA$ = this.getDataAsString().pipe(
+        filter((line: string) => line.startsWith('$GPGGA')),
+        map((line: string) => <GGAPacket>parseNmeaSentence(line)),
+      );
+    }
+
+    return this.getGGA$;
   }
 }

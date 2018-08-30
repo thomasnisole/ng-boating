@@ -1,25 +1,36 @@
 import {NgModule} from '@angular/core';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
-import {UserPreferencesService} from '../core/service/user-preferences.service';
-import {Ng2FittextModule} from 'ng2-fittext';
-import {UserPreferences} from '../core/model/user-preferences.model';
+import {CoordinateFieldComponent} from './component/coordinate-field/coordinate-field.component';
+import {LatitudeFieldComponent} from './component/latitude-field/latitude-field.component';
+import {Ng2FittextModule} from 'ng2-fittext/src/ng2-fittext.module';
+import {LongitudeFieldComponent} from './component/longitude-field/longitude-field.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
-    Ng2FittextModule
+    Ng2FittextModule,
+    TranslateModule
   ],
   exports: [
     CommonModule,
+    CoordinateFieldComponent,
     FormsModule,
     HttpClientModule,
-    TranslateModule,
-    Ng2FittextModule
-  ]
+    LatitudeFieldComponent,
+    LongitudeFieldComponent,
+    Ng2FittextModule,
+    TranslateModule
+  ],
+  declarations: [
+    CoordinateFieldComponent,
+    LatitudeFieldComponent,
+    LongitudeFieldComponent
+  ],
 })
-export class SharedModule {}
+export class SharedModule {
+}

@@ -76,7 +76,6 @@ export class TrackerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    console.log('connardd');
     if (this.userPreferenceSubscription) {
       this.userPreferenceSubscription.unsubscribe();
     }

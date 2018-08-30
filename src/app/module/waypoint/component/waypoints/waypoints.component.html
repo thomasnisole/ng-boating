@@ -2,10 +2,10 @@
   <ul class="list-unstyled mb-0 bg-secondary text-nowrap">
     <li class="bg-secondary border-bottom border-dark">
       <input name="waypoint-search" type="text" placeholder="{{ 'waypoint.search'|translate }}" class="form-control"
-             [(ngModel)]="waypointSearch"/>
+             [(ngModel)]="waypointSearch" (keyup)="waypointSearchOnChange()"/>
     </li>
     <li class="bg-secondary border-bottom border-dark" *ngFor="let waypoint of waypoints$|async|waypointsFilter:waypointSearch">
-      <a class="btn btn-primary rounded-0" [routerLink]="[waypoint.name]" routerLinkActive="bg-secondary border-secondary">
+      <a class="btn btn-primary rounded-0" [routerLink]="[waypoint.id]" routerLinkActive="bg-secondary border-secondary">
         <i class="fa fa-chevron-right"></i>
       </a>
       <span class="py-1 px-3">{{ waypoint.name }}</span>

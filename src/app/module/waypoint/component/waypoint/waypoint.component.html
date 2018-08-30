@@ -1,30 +1,43 @@
-<form *ngIf="waypoint$|async as waypoint">
+<form *ngIf="waypoint$|async as waypoint" #waypointForm="ngForm" novalidate
+      (ngSubmit)="submit(waypoint)">
+  <div class="row justify-content-end mb-3">
+    <button type="button" (click)="ngOnInit()" class="btn btn-secondary mr-1" *ngIf="waypointForm.dirty">
+      <span class="fa fa-undo"></span>
+    </button>
+    <button type="submit" class="btn btn-primary mx-1" *ngIf="waypointForm.dirty" [disabled]="!waypointForm.form.valid">
+      <span class="fa fa-save"></span>
+    </button>
+    <button type="button" class="btn btn-danger mx-1">
+      <span class="fa fa-trash"></span>
+    </button>
+    <button type="button" class="btn btn-success ml-1">
+      <span class="fa fa-arrow-right"></span>
+    </button>
+  </div>
   <div class="form-group row">
-    <label for="name" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.name'|translate }}</label>
-    <div class="col-8">
+    <label for="name" class="col-3 col-form-label text-light">{{ 'waypoint.form.label.name'|translate }}</label>
+    <div class="col-9">
       <input type="text" name="name" id="name" class="form-control" [(ngModel)]="waypoint.name"
-             placeholder="{{ 'waypoint.form.label.name'|translate }}" />
+             placeholder="{{ 'waypoint.form.label.name'|translate }}" required/>
     </div>
   </div>
   <div class="form-group row">
-    <label for="latitude" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.latitude'|translate }}</label>
-    <div class="col-8">
-      <input type="text" name="latitude" id="latitude" class="form-control" [(ngModel)]="waypoint.lat"
-             placeholder="{{ 'waypoint.form.label.latitude'|translate }}" />
+    <label class="col-3 col-form-label text-light">{{ 'waypoint.form.label.latitude'|translate }}</label>
+    <div class="col-9 text-light">
+      <app-latitude-field name="latitude" [(ngModel)]="waypoint.lat"></app-latitude-field>
     </div>
   </div>
   <div class="form-group row">
-    <label for="longitude" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.longitude'|translate }}</label>
-    <div class="col-8">
-      <input type="text" name="longitude" id="longitude" class="form-control" [(ngModel)]="waypoint.lng"
-             placeholder="{{ 'waypoint.form.label.longitude'|translate }}" />
+    <label class="col-3 col-form-label text-light">{{ 'waypoint.form.label.longitude'|translate }}</label>
+    <div class="col-9 text-light">
+      <app-longitude-field name="longitude" [(ngModel)]="waypoint.lng"></app-longitude-field>
     </div>
   </div>
   <div class="form-group row">
-    <label for="description" class="col-4 col-form-label text-light">{{ 'waypoint.form.label.description'|translate }}</label>
-    <div class="col-8">
+    <label for="description" class="col-3 col-form-label text-light">{{ 'waypoint.form.label.description'|translate }}</label>
+    <div class="col-9">
       <textarea  name="description" id="description" class="form-control" [(ngModel)]="waypoint.description" row="5"
-                placeholder="{{ 'waypoint.form.label.description'|translate }}"></textarea>
+                 placeholder="{{ 'waypoint.form.label.description'|translate }}" required></textarea>
     </div>
   </div>
 </form>

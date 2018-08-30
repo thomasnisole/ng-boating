@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {filter, map, mergeMap} from 'rxjs/internal/operators';
-import {Observable} from 'rxjs/index';
-import {TranslateService} from '@ngx-translate/core';
+import {GpsService} from '../../module/core/service/gps.service';
+import {GGAPacket} from 'nmea-simple';
 
 @Component({
   selector: 'app-layout',
@@ -13,7 +13,9 @@ export class LayoutComponent implements OnInit {
 
   public title: string;
 
-  public constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  public ggaPacket: GGAPacket;
+
+  public constructor(private router: Router, private activatedRoute: ActivatedRoute, private gpsService: GpsService) {
     this.router
       .events
       .pipe(
@@ -32,6 +34,18 @@ export class LayoutComponent implements OnInit {
       .subscribe((data: any[]) => this.title = data['title']);
   }
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.gpsService.getGGAData().subscribe(
+      (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
+    );
+  }
+
+  public isConnected(): boolean {
+    if (!this.ggaPacket) {
+      return false;
+    }
+
+    return this.ggaPacket.fixType !== 'none';
+  }
 
 }

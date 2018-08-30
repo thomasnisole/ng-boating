@@ -1,10 +1,19 @@
+import {JsonProperty} from 'json-typescript-mapper';
+
 export class Waypoint {
 
-  public name: string;
+  @JsonProperty('id')
+  public id: string = void 0;
 
-  public description: string;
+  @JsonProperty('name')
+  public name: string = void 0;
 
-  public lat: number;
+  @JsonProperty('description')
+  public description: string = void 0;
 
-  public lng: number;
+  @JsonProperty('lat')
+  public lat: number = void 0;
+
+  @JsonProperty('lng')
+  public lng: number = void 0;
 }

@@ -1,0 +1,13 @@
+<input name="degrees" type="number" class="form-control d-inline-block text-center" style="width: 60px;"
+       [(ngModel)]="degrees" #degreesField="ngModel" placeholder="000" required (keyup)="onCoordinateChange()"/>
+<span class="mx-1" style="font-size: 25px">°</span>
+<input name="minutes" type="number" class="form-control d-inline-block text-center" style="width: 60px;"
+       [(ngModel)]="minutes" #minutesField="ngModel" placeholder="00" required (keyup)="onCoordinateChange()"/>
+<span class="mx-1" style="font-size: 25px">.</span>
+<input name="decimal" type="number" class="form-control d-inline-block" style="width: 80px;"
+       [(ngModel)]="decimal" #decimalField="ngModel" placeholder="0000" required (keyup)="onCoordinateChange()"/>
+<span class="mx-1" style="font-size: 25px">'</span>
+<select name="cardinality" class="form-control d-inline-block" style="width: 70px;"
+        [(ngModel)]="cardinality" #cardinalityField="ngModel" placeholder="X" required (change)="onCoordinateChange()">
+  <option value="{{ orientation }}" *ngFor="let orientation of orientations[coordToDisplay]">{{ orientation }}</option>
+</select>

@@ -1,0 +1,14 @@
+div.d-flex {
+  ul {
+    li {
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+
+  div.flex-grow-1 {
+    max-height: 100%;
+    overflow: auto;
+  }
+}

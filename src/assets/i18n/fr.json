@@ -46,7 +46,12 @@
         "latitude": "Latitude",
         "longitude": "Longitude",
         "description": "Description"
-      }
+      },
+      "coord-format": "000° 00.0000′ X",
+      "save": "Sauvegarder",
+      "cancel": "Annuler",
+      "go": "Aller",
+      "delete": "Supprimer"
     }
   }
 }

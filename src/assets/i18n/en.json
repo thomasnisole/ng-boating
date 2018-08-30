@@ -26,5 +26,30 @@
         "logs": "Logs"
       }
     }
+  },
+  "gps": {
+    "dial-title": {
+      "coordinates": "Coordinates",
+      "distance-to-go": "Distance to go",
+      "eta": "Arrived in",
+      "speed": "Speed",
+      "angle": "Angle",
+      "angle-to-follow": "Angle to follow"
+    }
+  },
+  "waypoint": {
+    "search": "Search",
+    "form": {
+      "label": {
+        "name": "Name",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "description": "Description"
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "go": "Go",
+      "delete": "Delete"
+    }
   }
 }
