@@ -1,14 +1,35 @@
+@import "../../../../../../node_modules/bootstrap/scss/bootstrap";
+
+$waypoint-dimensions: 100px;
+$waypoint-height: $waypoint-dimensions;
+$waypoint-width: $waypoint-dimensions;
+
 div.d-flex {
+
   ul {
+
     li {
-      span {
+      height: $waypoint-height;
+      width: $waypoint-width;
+
+      a {
+        text-align: center;
+        display: block;
+        color: $white;
         font-size: 13px;
+        text-decoration: none;
+
+        span.fa {
+          font-size: 50px;
+          line-height: 60px;
+        }
+      }
+
+      &:first-child {
+        a {
+          opacity: .8;
+        }
       }
     }
-  }
-
-  div.flex-grow-1 {
-    max-height: 100%;
-    overflow: auto;
   }
 }

@@ -5,7 +5,6 @@ import { WaypointComponent } from './component/waypoint/waypoint.component';
 import {WaypointRoutingModule} from './waypoint-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import { WaypointsFilterPipe } from './pipe/waypoints-filter.pipe';
-import {WaypointResolver} from './resolver/waypoint-resolver.service';
 
 @NgModule({
   imports: [
@@ -17,9 +16,6 @@ import {WaypointResolver} from './resolver/waypoint-resolver.service';
     WaypointsComponent,
     WaypointComponent,
     WaypointsFilterPipe
-  ],
-  providers: [
-    WaypointResolver
   ]
 })
 export class WaypointModule { }

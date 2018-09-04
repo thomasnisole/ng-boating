@@ -1,8 +1,17 @@
 {
   "menu": {
     "gps": "GPS",
+    "waypoints": "Waypoints",
+    "add-waypoint": "Add a waypoint",
     "tide": "Tide",
     "settings": "Settings"
+  },
+  "error": {
+    "an-error-occurred": "An error occurred"
+  },
+  "buttons": {
+    "no": "No",
+    "yes": "Yes"
   },
   "settings": {
     "menu": {
@@ -49,7 +58,14 @@
       "save": "Save",
       "cancel": "Cancel",
       "go": "Go",
+      "back": "Back",
       "delete": "Delete"
+    },
+    "delete": {
+      "modal": {
+        "title": "Deletion of waypoint",
+        "body": "Are you sure you want to delete this waypoint ?"
+      }
     }
   }
 }

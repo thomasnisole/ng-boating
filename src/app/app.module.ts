@@ -12,6 +12,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {SharedModule} from './module/shared/shared.module';
 import {SocketIoModule} from 'ngx-socket-io';
 import {AppGuardService} from './service/app-guard.service';
+import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ToastrModule} from 'ngx-toastr';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -27,10 +29,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     BrowserModule,
     CoreModule,
+    NgbModule,
+    NgbModalModule,
     SharedModule,
     SocketIoModule.forRoot({
       url: 'http://localhost:80'
     }),
+    ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

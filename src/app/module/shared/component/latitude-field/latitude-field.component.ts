@@ -1,5 +1,6 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'app-latitude-field',
@@ -42,7 +43,7 @@ export class LatitudeFieldComponent implements OnInit, ControlValueAccessor {
       this.latitude = value;
     }
 
-    if (previousValue) {
+    if (previousValue !== null) {
       this.updateChanges();
     }
   }

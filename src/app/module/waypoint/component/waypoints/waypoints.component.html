@@ -1,18 +1,16 @@
-<div class="d-flex h-100">
-  <ul class="list-unstyled mb-0 bg-secondary text-nowrap">
-    <li class="bg-secondary border-bottom border-dark">
-      <input name="waypoint-search" type="text" placeholder="{{ 'waypoint.search'|translate }}" class="form-control"
-             [(ngModel)]="waypointSearch" (keyup)="waypointSearchOnChange()"/>
-    </li>
-    <li class="bg-secondary border-bottom border-dark" *ngFor="let waypoint of waypoints$|async|waypointsFilter:waypointSearch">
-      <a class="btn btn-primary rounded-0" [routerLink]="[waypoint.id]" routerLinkActive="bg-secondary border-secondary">
-        <i class="fa fa-chevron-right"></i>
+<div class="d-flex h-100 w-100 flex-column px-2">
+  <input name="waypoint-search" type="text" placeholder="{{ 'waypoint.search'|translate }}" class="form-control"
+         [(ngModel)]="waypointSearch"/>
+  <ul class="list-unstyled mb-0 py-1 flex-grow-1 d-flex flex-row justify-content-start align-items-start">
+    <li class="p-2">
+      <a class="bg-primary w-100 h-100 d-flex flex-column justify-content-center" [routerLink]="['add']">
+        <span class="fa fa-plus"></span>
       </a>
-      <span class="py-1 px-3">{{ waypoint.name }}</span>
+    </li>
+    <li class="p-2" *ngFor="let waypoint of waypoints$|async|waypointsFilter:waypointSearch">
+      <a class="bg-primary w-100 h-100 d-flex flex-column justify-content-center" [routerLink]="[waypoint.id]">
+        <span>{{ waypoint.name }}</span>
+      </a>
     </li>
   </ul>
-
-  <div class="flex-grow-1 px-4 py-2">
-    <router-outlet></router-outlet>
-  </div>
 </div>

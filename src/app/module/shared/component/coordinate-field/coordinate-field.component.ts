@@ -16,11 +16,14 @@ export class CoordinateFieldComponent implements OnInit {
   @Output()
   public coordChange: EventEmitter<string> = new EventEmitter();
 
-  public degrees: string;
+  @Input()
+  public maxDegrees: number = 0;
 
-  public minutes: string;
+  public degrees: string = null;
 
-  public decimal: string;
+  public minutes: string = null;
+
+  public decimal: string = null;
 
   public cardinality: string;
 
@@ -32,6 +35,11 @@ export class CoordinateFieldComponent implements OnInit {
   public constructor() { }
 
   public ngOnInit(): void {
+    if (this.coordToDisplay === 0) {
+      this.cardinality = 'N';
+    } else {
+      this.cardinality = 'W';
+    }
   }
 
   @Input()
@@ -67,19 +75,67 @@ export class CoordinateFieldComponent implements OnInit {
     this.cardinality = decimalSep[1];
   }
 
-  public onCoordinateChange(): void {
+  public onDegreesChange(): void {
+    if (this.degrees > this.maxDegrees) {
+      this.degrees = this.maxDegrees;
+    }
+
+    this.degrees = leftPad(this.degrees, 3, '0');
+
+    this.onCoordinateChange();
+  }
+
+  public onMinutesChange(): void {
+    if (this.minutes > 60) {
+      this.minutes = 60;
+    }
+
+    this.minutes = leftPad(this.minutes, 2, '0');
+
+    this.onCoordinateChange();
+  }
+
+  public onDecimalChange(): void {
+    if (this.decimal > 9999) {
+      this.decimal = 9999;
+    }
+
+    this.onCoordinateChange();
+  }
+
+  private onCoordinateChange(): void {
     try {
-      if (this.coordToDisplay === 0) {
-        this.coordChange.emit(
-          parseDMS(this.degrees + '° ' + this.minutes + '.' + this.decimal + '\' ' + this.cardinality).lat
-        );
+      let coord: string = '';
+
+      if (this.degrees === null) {
+        coord += '0';
       } else {
-        this.coordChange.emit(
-          parseDMS(this.degrees + '° ' + this.minutes + '.' + this.decimal + '\' ' + this.cardinality).lon
-        );
+        coord += this.degrees;
+      }
+      coord += '° ';
+
+      if (this.minutes === null) {
+        coord += '0';
+      } else {
+        coord += this.minutes;
+      }
+      coord += '.';
+
+      if (this.decimal === null) {
+        coord += '0';
+      } else {
+        coord += this.decimal;
+      }
+
+      coord += '\' ' + this.cardinality;
+
+      if (this.coordToDisplay === 0) {
+        this.coordChange.emit(parseDMS(coord).lat);
+      } else {
+        this.coordChange.emit(parseDMS(coord).lon);
       }
     } catch (err) {
-
+      console.warn(err);
     }
   }
 }

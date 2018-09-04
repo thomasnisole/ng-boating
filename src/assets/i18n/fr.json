@@ -2,8 +2,16 @@
   "menu": {
     "gps": "GPS",
     "waypoints": "Waypoints",
+    "add-waypoint": "Ajouter un waypoint",
     "tide": "Marée",
     "settings": "Réglages"
+  },
+  "error": {
+    "an-error-occurred": "Une erreur est survenue"
+  },
+  "buttons": {
+    "no": "Non",
+    "yes": "Oui"
   },
   "settings": {
     "menu": {
@@ -51,7 +59,14 @@
       "save": "Sauvegarder",
       "cancel": "Annuler",
       "go": "Aller",
+      "back": "Retour",
       "delete": "Supprimer"
+    },
+    "delete": {
+      "modal": {
+        "title": "Suppression d'un waypoint",
+        "body": "Êtes-vous sûr de vouloir supprimer ce waypoint ?"
+      }
     }
   }
 }

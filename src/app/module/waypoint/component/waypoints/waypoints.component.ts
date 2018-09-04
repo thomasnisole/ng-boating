@@ -20,8 +20,4 @@ export class WaypointsComponent implements OnInit {
   public ngOnInit(): void {
     this.waypoints$ = this.waypointService.findAll();
   }
-
-  public waypointSearchOnChange(): void {
-    this.router.navigate(['/', 'app', 'waypoints']);
-  }
 }

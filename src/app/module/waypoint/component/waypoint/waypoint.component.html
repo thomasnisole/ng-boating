@@ -1,43 +1,68 @@
-<form *ngIf="waypoint$|async as waypoint" #waypointForm="ngForm" novalidate
-      (ngSubmit)="submit(waypoint)">
-  <div class="row justify-content-end mb-3">
-    <button type="button" (click)="ngOnInit()" class="btn btn-secondary mr-1" *ngIf="waypointForm.dirty">
-      <span class="fa fa-undo"></span>
-    </button>
-    <button type="submit" class="btn btn-primary mx-1" *ngIf="waypointForm.dirty" [disabled]="!waypointForm.form.valid">
-      <span class="fa fa-save"></span>
-    </button>
-    <button type="button" class="btn btn-danger mx-1">
-      <span class="fa fa-trash"></span>
-    </button>
-    <button type="button" class="btn btn-success ml-1">
-      <span class="fa fa-arrow-right"></span>
-    </button>
-  </div>
-  <div class="form-group row">
-    <label for="name" class="col-3 col-form-label text-light">{{ 'waypoint.form.label.name'|translate }}</label>
-    <div class="col-9">
-      <input type="text" name="name" id="name" class="form-control" [(ngModel)]="waypoint.name"
-             placeholder="{{ 'waypoint.form.label.name'|translate }}" required/>
+<div class="container">
+  <form *ngIf="waypoint$|async as waypoint" #waypointForm="ngForm" novalidate
+        (ngSubmit)="submit(waypoint)">
+    <div class="row mb-3">
+      <div class="col-2">
+        <a class="btn btn-outline-secondary" [routerLink]="['..']">
+          <span class="fa fa-arrow-left"></span><span class="ml-1">{{ 'waypoint.form.back'|translate }}</span>
+        </a>
+      </div>
+      <div class="col-10 text-right">
+        <button type="button" (click)="ngOnInit()" class="btn btn-secondary mr-1" *ngIf="waypointForm.dirty">
+          <span class="fa fa-undo"></span><span class="ml-1">{{ 'waypoint.form.cancel'|translate }}</span>
+        </button>
+        <button type="submit" class="btn btn-primary mx-1" *ngIf="waypointForm.dirty" [disabled]="!waypointForm.form.valid">
+          <span class="fa fa-save"></span><span class="ml-1">{{ 'waypoint.form.save'|translate }}</span>
+        </button>
+        <button type="button" class="btn btn-danger mx-1" (click)="openModalDeletion(content)">
+          <span class="fa fa-trash"></span><span class="ml-1">{{ 'waypoint.form.delete'|translate }}</span>
+        </button>
+        <button type="button" class="btn btn-success ml-1">
+          <span class="fa fa-arrow-right"></span><span class="ml-1">{{ 'waypoint.form.go'|translate }}</span>
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-3 col-form-label text-light">{{ 'waypoint.form.label.latitude'|translate }}</label>
-    <div class="col-9 text-light">
-      <app-latitude-field name="latitude" [(ngModel)]="waypoint.lat"></app-latitude-field>
+    <div class="form-group row">
+      <label for="name" class="col-3 col-form-label text-light">{{ 'waypoint.form.label.name'|translate }}</label>
+      <div class="col-9">
+        <input type="text" name="name" id="name" class="form-control" [(ngModel)]="waypoint.name"
+               placeholder="{{ 'waypoint.form.label.name'|translate }}" required/>
+      </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-3 col-form-label text-light">{{ 'waypoint.form.label.longitude'|translate }}</label>
-    <div class="col-9 text-light">
-      <app-longitude-field name="longitude" [(ngModel)]="waypoint.lng"></app-longitude-field>
+    <div class="form-group row">
+      <label class="col-3 col-form-label text-light">{{ 'waypoint.form.label.latitude'|translate }}</label>
+      <div class="col-9 text-light">
+        <app-latitude-field name="latitude" [(ngModel)]="waypoint.lat"></app-latitude-field>
+      </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="description" class="col-3 col-form-label text-light">{{ 'waypoint.form.label.description'|translate }}</label>
-    <div class="col-9">
+    <div class="form-group row">
+      <label class="col-3 col-form-label text-light">{{ 'waypoint.form.label.longitude'|translate }}</label>
+      <div class="col-9 text-light">
+        <app-longitude-field name="longitude" [(ngModel)]="waypoint.lng"></app-longitude-field>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="description" class="col-3 col-form-label text-light">{{ 'waypoint.form.label.description'|translate }}</label>
+      <div class="col-9">
       <textarea  name="description" id="description" class="form-control" [(ngModel)]="waypoint.description" row="5"
                  placeholder="{{ 'waypoint.form.label.description'|translate }}" required></textarea>
+      </div>
     </div>
-  </div>
-</form>
+
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ 'waypoint.delete.modal.title'|translate }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ 'waypoint.delete.modal.body'|translate }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close(null)">{{ 'buttons.no'|translate }}</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close(waypoint)">{{ 'buttons.yes'|translate }}</button>
+      </div>
+    </ng-template>
+  </form>
+</div>

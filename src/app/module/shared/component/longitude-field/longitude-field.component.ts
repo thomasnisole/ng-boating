@@ -42,7 +42,7 @@ export class LongitudeFieldComponent implements OnInit, ControlValueAccessor {
       this.longitude = value;
     }
 
-    if (previousValue) {
+    if (previousValue !== null) {
       this.updateChanges();
     }
   }
