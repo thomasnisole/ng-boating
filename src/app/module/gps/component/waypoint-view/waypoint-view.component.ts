@@ -9,11 +9,11 @@ import {UserPreferences} from '../../../core/model/user-preferences.model';
 import {filter} from 'rxjs/internal/operators';
 
 @Component({
-  selector: 'app-main-view',
-  templateUrl: './main-view.component.html',
-  styleUrls: ['./main-view.component.scss']
+  selector: 'app-waypoint-view',
+  templateUrl: './waypoint-view.component.html',
+  styleUrls: ['./waypoint-view.component.scss']
 })
-export class MainViewComponent implements OnInit {
+export class WaypointViewComponent implements OnInit {
 
   public rmcData: RMCPacket;
 
@@ -33,8 +33,8 @@ export class MainViewComponent implements OnInit {
       )
       .subscribe(
         (rmcData: RMCPacket) => {
+          console.log(rmcData);
           this.rmcData = rmcData;
-          this.rmcData.speedKnots = 6.5;
 
           if (this.rmcData) {
             this.coordAsString = formatcoords(this.rmcData.latitude, this.rmcData.longitude)

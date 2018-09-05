@@ -1,20 +1,12 @@
-<div class="d-flex h-100">
-  <div class="left-side">
+<div class="d-flex h-100 flex-column">
+  <div class="top-side">
     <app-dial [header]="'gps.dial-title.coordinates'|translate" [defaultBody]="'----'" [body]="coordAsString" class="border-warning">
     </app-dial>
-    <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [defaultBody]="'--'" [footer]="'Mn'" class="border-danger">
-    </app-dial>
-    <app-dial [header]="'gps.dial-title.eta'|translate" [defaultBody]="'--:--'" class="border-secondary">
-    </app-dial>
+    <app-dial [header]="'Cap'" [defaultBody]="'---'" [body]="rmcData? rmcData.trackTrue + '°' : ''" class="border-primary"></app-dial>
   </div>
 
-  <div class="right-side">
+  <div class="bottom-side">
     <app-dial [header]="'gps.dial-title.speed'|translate" [defaultBody]="0" [body]="rmcData?.speedKnots" [footer]="'Kts'" class="border-success">
     </app-dial>
-    <div class="d-flex">
-      <app-dial [header]="'Cap'" [defaultBody]="'---'" [body]="rmcData? rmcData.trackTrue + '°' : ''" class="border-primary">
-      </app-dial>
-      <app-dial [header]="'Cap à suivre'" [defaultBody]="'---'" class="border-white"></app-dial>
-    </div>
   </div>
 </div>

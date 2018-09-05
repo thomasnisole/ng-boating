@@ -1,37 +1,27 @@
 @import "~node_modules/bootstrap/scss/bootstrap";
 
-div.left-side {
-  flex-grow: 1;
-  flex-direction: column;
+div.d-flex {
 
-  width: 50%;
-
-  > app-dial {
+  div.top-side {
     height: calc(100% / 3);
-  }
-}
+    width: 100%;
 
-div.right-side {
-  flex-grow: 1;
-  flex-direction: column;
+    display: flex;
+    flex-direction: row;
 
-  width: 50%;
-
-  > app-dial:first-child {
-    height: calc((100% / 3) * 2);
-  }
-
-  > .d-flex {
-    height: calc(100% / 3);
-
-    app-dial:first-child {
-      height: 100%;
+    > app-dial {
       width: 50%;
+      height: 100%;
     }
+  }
 
-    app-dial:last-child {
+  div.bottom-side {
+    height: calc((100% / 3) * 2);
+    width: 100%;
+
+    > app-dial {
+      width: 100%;
       height: 100%;
-      width: 50%;
     }
   }
 }

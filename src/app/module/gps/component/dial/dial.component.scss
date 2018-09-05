@@ -18,12 +18,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    // font-family: digit-3;
 
     > span {
-      white-space: nowrap
-      // flex-grow: 1;
-      // font-family: Times;
+      white-space: nowrap;
+      flex-grow: 1;
     }
   }
 
