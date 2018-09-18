@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {Waypoint} from '../../../core/model/waypoint.model';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {WaypointService} from '../../../core/service/waypoint.service';
-import {catchError, map, mergeMap, tap} from 'rxjs/internal/operators';
-import {Observable, of} from 'rxjs/index';
+import {catchError, mergeMap} from 'rxjs/internal/operators';
+import {EMPTY, Observable, of} from 'rxjs/index';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 import {TranslateService} from '@ngx-translate/core';
+import {GpsService} from '../../../core/service/gps.service';
 
 @Component({
   selector: 'app-waypoint',
@@ -23,7 +24,8 @@ export class WaypointComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private translateService: TranslateService) {
+    private translateService: TranslateService,
+    private gpsService: GpsService) {
   }
 
   public ngOnInit(): void {
@@ -33,7 +35,11 @@ export class WaypointComponent implements OnInit {
           return of(new Waypoint());
         } else {
           return this.waypointService.findById(p['waypoint_id']).pipe(
-            catchError(() => this.router.navigate(['app', 'waypoints', 'add']))
+            catchError(() => {
+              this.router.navigate(['app', 'waypoints', 'add']);
+
+              return EMPTY;
+            })
           );
         }
       })
@@ -61,7 +67,7 @@ export class WaypointComponent implements OnInit {
   }
 
   public openModalDeletion(content: any): void {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this.modalService.open(content).result.then(
       (result: Waypoint) => {
         if (!result) {
           return;
@@ -74,6 +80,20 @@ export class WaypointComponent implements OnInit {
           },
           () => this.toastr.error(this.translateService.instant('error.an-error-occurred'))
         );
+      },
+      () => void 0
+    );
+  }
+
+  public openModalToGoTo(content: any): void {
+    this.modalService.open(content).result.then(
+      (result: Waypoint) => {
+        if (!result) {
+          return;
+        }
+
+        this.gpsService.changeCurrentWaypoint(result);
+        this.router.navigate(['app', 'gps', 'waypoint']);
       },
       () => void 0
     );

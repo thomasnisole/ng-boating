@@ -14,10 +14,10 @@
         <button type="submit" class="btn btn-primary mx-1" *ngIf="waypointForm.dirty" [disabled]="!waypointForm.form.valid">
           <span class="fa fa-save"></span><span class="ml-1">{{ 'waypoint.form.save'|translate }}</span>
         </button>
-        <button type="button" class="btn btn-danger mx-1" (click)="openModalDeletion(content)">
+        <button type="button" class="btn btn-danger mx-1" (click)="openModalDeletion(deletionContent)">
           <span class="fa fa-trash"></span><span class="ml-1">{{ 'waypoint.form.delete'|translate }}</span>
         </button>
-        <button type="button" class="btn btn-success ml-1">
+        <button type="button" class="btn btn-success ml-1" (click)="openModalToGoTo(toGoToContent)">
           <span class="fa fa-arrow-right"></span><span class="ml-1">{{ 'waypoint.form.go'|translate }}</span>
         </button>
       </div>
@@ -49,15 +49,31 @@
       </div>
     </div>
 
-    <ng-template #content let-modal>
+    <ng-template #deletionContent let-modal>
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">{{ 'waypoint.delete.modal.title'|translate }}</h4>
+        <h4 class="modal-title">{{ 'waypoint.delete.modal.title'|translate }}</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         {{ 'waypoint.delete.modal.body'|translate }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close(null)">{{ 'buttons.no'|translate }}</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close(waypoint)">{{ 'buttons.yes'|translate }}</button>
+      </div>
+    </ng-template>
+
+    <ng-template #toGoToContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">{{ 'waypoint.to-go-to.modal.title'|translate }}&nbsp;{{ waypoint.name }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ 'waypoint.to-go-to.modal.body'|translate }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" (click)="modal.close(null)">{{ 'buttons.no'|translate }}</button>

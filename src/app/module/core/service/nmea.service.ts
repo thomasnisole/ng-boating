@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, Observer, of} from 'rxjs/index';
+import {Observable, Observer, of, Subject} from 'rxjs/index';
 import {HttpClient} from '@angular/common/http';
 import {Port} from '../model/port.model';
 import {map, tap} from 'rxjs/internal/operators';
@@ -8,7 +8,7 @@ import {Socket} from 'ngx-socket-io';
 @Injectable()
 export class NmeaService {
 
-  private getData$: Observable<string>;
+  private getData$: Subject<string>;
 
   public constructor(private socket: Socket, private httpClient: HttpClient) {}
 
@@ -50,10 +50,10 @@ export class NmeaService {
 
   public getDataAsString(): Observable<string> {
     if (!this.getData$) {
-      this.getData$ = new Observable((observer: Observer<string>) => {
-        this.socket.on('data', (line: string) => {
-          observer.next(line);
-        });
+      this.getData$ = new Subject();
+
+      this.socket.on('data', (line: string) => {
+        this.getData$.next(line);
       });
     }
 

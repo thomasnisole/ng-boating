@@ -3,6 +3,8 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {filter, map, mergeMap} from 'rxjs/internal/operators';
 import {GpsService} from '../../module/core/service/gps.service';
 import {GGAPacket} from 'nmea-simple';
+import {Waypoint} from '../../module/core/model/waypoint.model';
+import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-layout',
@@ -14,6 +16,8 @@ export class LayoutComponent implements OnInit {
   public title: string;
 
   public ggaPacket: GGAPacket;
+
+  public currentWaypoint$: Subject<Waypoint>;
 
   public constructor(private router: Router, private activatedRoute: ActivatedRoute, private gpsService: GpsService) {
     this.router
@@ -38,6 +42,8 @@ export class LayoutComponent implements OnInit {
     this.gpsService.getGGAData().subscribe(
       (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
     );
+
+    this.currentWaypoint$ = this.gpsService.getCurrentWaypoint();
   }
 
   public isConnected(): boolean {
@@ -48,4 +54,7 @@ export class LayoutComponent implements OnInit {
     return this.ggaPacket.fixType !== 'none';
   }
 
+  public cancelCurrentWaypoint(): void {
+    this.gpsService.changeCurrentWaypoint(null);
+  }
 }

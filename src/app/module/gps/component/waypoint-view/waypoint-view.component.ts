@@ -7,6 +7,9 @@ import * as formatcoords from 'formatcoords';
 import * as leftPad from 'left-pad';
 import {UserPreferences} from '../../../core/model/user-preferences.model';
 import {filter} from 'rxjs/internal/operators';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Waypoint} from '../../../core/model/waypoint.model';
+import {WaypointService} from '../../../core/service/waypoint.service';
 
 @Component({
   selector: 'app-waypoint-view',
@@ -19,10 +22,23 @@ export class WaypointViewComponent implements OnInit {
 
   public coordAsString: string = null;
 
-  public constructor(private userPreferencesService: UserPreferencesService, private gpsService: GpsService) {
+  public waypoint: Waypoint = null;
+
+  public constructor(
+    private userPreferencesService: UserPreferencesService,
+    private gpsService: GpsService,
+    private activatedRoute: ActivatedRoute,
+    private waypointService: WaypointService, private router: Router) {
   }
 
   public ngOnInit(): void {
+    this.activatedRoute.params
+      .pipe(
+        filter((params: Params) => params['waypoint_id']),
+        mergeMap((params: Params) => this.waypointService.findById(params['waypoint_id']))
+      )
+      .subscribe((waypoint: Waypoint) => this.waypoint = waypoint);
+
     this.userPreferencesService.find()
       .pipe(
         mergeMap((preferences: UserPreferences) => this.gpsService.open(preferences.baudRate, preferences.port)
@@ -33,7 +49,6 @@ export class WaypointViewComponent implements OnInit {
       )
       .subscribe(
         (rmcData: RMCPacket) => {
-          console.log(rmcData);
           this.rmcData = rmcData;
 
           if (this.rmcData) {
@@ -55,5 +70,11 @@ export class WaypointViewComponent implements OnInit {
           console.log(err);
         }
       );
+  }
+
+  public onSwipe($event): void {
+    if ($event.direction === 4) {
+      this.router.navigate(['app', 'gps', 'main']);
+    }
   }
 }

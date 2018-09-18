@@ -67,6 +67,12 @@
         "title": "Suppression d'un waypoint",
         "body": "Êtes-vous sûr de vouloir supprimer ce waypoint ?"
       }
+    },
+    "to-go-to": {
+      "modal": {
+        "title": "Aller au waypoint",
+        "body": "Êtes-vous sûr de vouloir vous rendre à ce waypoint ?"
+      }
     }
   }
 }

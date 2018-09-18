@@ -77,7 +77,7 @@ export class CoordinateFieldComponent implements OnInit {
 
   public onDegreesChange(): void {
     if (parseInt(this.degrees, 10) > this.maxDegrees) {
-      this.degrees = this.maxDegrees;
+      this.degrees = this.maxDegrees.toString();
     }
 
     this.degrees = leftPad(this.degrees, 3, '0');
@@ -87,7 +87,7 @@ export class CoordinateFieldComponent implements OnInit {
 
   public onMinutesChange(): void {
     if (parseInt(this.minutes, 10) > 60) {
-      this.minutes = 60;
+      this.minutes = '60';
     }
 
     this.minutes = leftPad(this.minutes, 2, '0');
@@ -97,7 +97,7 @@ export class CoordinateFieldComponent implements OnInit {
 
   public onDecimalChange(): void {
     if (parseInt(this.decimal, 10) > 9999) {
-      this.decimal = 9999;
+      this.decimal = '9999';
     }
 
     this.onCoordinateChange();

@@ -6,7 +6,7 @@ import {RMCPacket} from 'nmea-simple';
 import * as formatcoords from 'formatcoords';
 import * as leftPad from 'left-pad';
 import {UserPreferences} from '../../../core/model/user-preferences.model';
-import {filter} from 'rxjs/internal/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-main-view',
@@ -19,7 +19,7 @@ export class MainViewComponent implements OnInit {
 
   public coordAsString: string = null;
 
-  public constructor(private userPreferencesService: UserPreferencesService, private gpsService: GpsService) {
+  public constructor(private userPreferencesService: UserPreferencesService, private gpsService: GpsService, private router: Router) {
   }
 
   public ngOnInit(): void {
@@ -34,7 +34,6 @@ export class MainViewComponent implements OnInit {
       .subscribe(
         (rmcData: RMCPacket) => {
           this.rmcData = rmcData;
-          this.rmcData.speedKnots = 6.5;
 
           if (this.rmcData) {
             this.coordAsString = formatcoords(this.rmcData.latitude, this.rmcData.longitude)
@@ -56,4 +55,17 @@ export class MainViewComponent implements OnInit {
         }
       );
   }
+
+  public onSwipe($event): void {
+    switch ($event.direction) {
+      case 2:
+        this.router.navigate(['app', 'gps', 'waypoint']);
+        break;
+
+      case 4:
+        this.router.navigate(['app', 'gps', 'satellites']);
+        break;
+    }
+  }
 }
+

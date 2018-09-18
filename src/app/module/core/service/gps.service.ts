@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/index';
+import {Observable, Subject} from 'rxjs/index';
 import {GGAPacket, GSVPacket, parseNmeaSentence, RMCPacket} from 'nmea-simple';
 import {NmeaService} from './nmea.service';
-import {filter, map} from 'rxjs/internal/operators';
+import {filter, map, distinctUntilChanged} from 'rxjs/internal/operators';
 import {HttpClient} from '@angular/common/http';
 import {Socket} from 'ngx-socket-io';
+import {Waypoint} from '../model/waypoint.model';
+import * as _ from 'underscore';
 
 @Injectable()
 export class GpsService extends NmeaService {
@@ -15,6 +17,8 @@ export class GpsService extends NmeaService {
 
   private getGGA$: Observable<GGAPacket>;
 
+  private currentWaypoint$: Subject<Waypoint>;
+
   public constructor(socket: Socket, httpClient: HttpClient) {
     super(socket, httpClient);
   }
@@ -23,7 +27,8 @@ export class GpsService extends NmeaService {
     if (!this.getGSV$) {
       this.getGSV$ = this.getDataAsString().pipe(
         filter((line: string) => line.startsWith('$GPGSV')),
-        map((line: string) => <GSVPacket>parseNmeaSentence(line))
+        map((line: string) => <GSVPacket>parseNmeaSentence(line)),
+        distinctUntilChanged((a, b) => _.isEqual(a, b)),
       );
     }
 
@@ -35,6 +40,7 @@ export class GpsService extends NmeaService {
       this.getRMC$ = this.getDataAsString().pipe(
         filter((line: string) => line.startsWith('$GPRMC')),
         map((line: string) => <RMCPacket>parseNmeaSentence(line)),
+        distinctUntilChanged((a, b) => _.isEqual(a, b)),
       );
     }
 
@@ -46,9 +52,26 @@ export class GpsService extends NmeaService {
       this.getGGA$ = this.getDataAsString().pipe(
         filter((line: string) => line.startsWith('$GPGGA')),
         map((line: string) => <GGAPacket>parseNmeaSentence(line)),
+        distinctUntilChanged((a, b) => _.isEqual(a, b)),
       );
     }
 
     return this.getGGA$;
+  }
+
+  public getCurrentWaypoint(): Subject<Waypoint> {
+    if (!this.currentWaypoint$) {
+      this.currentWaypoint$ = new Subject();
+    }
+
+    return this.currentWaypoint$;
+  }
+
+  public changeCurrentWaypoint(waypoint: Waypoint) {
+    if (!this.currentWaypoint$) {
+      this.currentWaypoint$ = new Subject();
+    }
+
+    this.currentWaypoint$.next(waypoint);
   }
 }

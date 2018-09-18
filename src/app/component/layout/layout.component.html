@@ -5,8 +5,16 @@
   <span class="border-bottom border-primary flex-grow-1 pt-2">
     &nbsp;<i class="fa fa-chevron-right"></i>&nbsp;{{ title|translate }}
   </span>
-  <span class="border-bottom border-primary p-1" style="width: 36px">
-    <span class="rounded-circle w-100 h-100 d-block" [ngClass]="{'bg-success': isConnected(), 'bg-danger': !isConnected()}">
+  <span class="border-bottom border-primary p-1 d-flex align-items-center">
+    <span class="text-nowrap mr-1 badge badge-secondary"
+          *ngIf="currentWaypoint$|async as currentWaypoint"
+          (click)="cancelCurrentWaypoint()">
+      {{ currentWaypoint.name }}
+      <span class="fa fa-close"></span>
+    </span>
+    <span style="width: 27px;"
+          class="rounded-circle h-100 d-block"
+          [ngClass]="{'bg-success': isConnected(), 'bg-danger': !isConnected()}">
     </span>
   </span>
 </h1>

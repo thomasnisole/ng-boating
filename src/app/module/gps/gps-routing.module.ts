@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'main'
+    redirectTo: 'satellites'
   },
   {
     path: 'main',
@@ -26,7 +26,10 @@ const routes: Routes = [
   },
   {
     path: 'satellites',
-    component: SatellitesViewComponent
+    component: SatellitesViewComponent,
+    data: {
+      title: 'Satellites'
+    }
   }
 ];
 

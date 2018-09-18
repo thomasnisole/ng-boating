@@ -66,6 +66,12 @@
         "title": "Deletion of waypoint",
         "body": "Are you sure you want to delete this waypoint ?"
       }
+    },
+    "to-go-to": {
+      "modal": {
+        "title": "Go to waypoint",
+        "body": "Are you sure you want to go to this waypoint ?"
+      }
     }
   }
 }
