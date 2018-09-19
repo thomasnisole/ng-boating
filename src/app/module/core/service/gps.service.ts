@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs/index';
+import {BehaviorSubject, EMPTY, Observable} from 'rxjs/index';
 import {GGAPacket, GSVPacket, parseNmeaSentence, RMCPacket} from 'nmea-simple';
 import {NmeaService} from './nmea.service';
 import {filter, map, distinctUntilChanged} from 'rxjs/internal/operators';
@@ -17,10 +17,14 @@ export class GpsService extends NmeaService {
 
   private getGGA$: Observable<GGAPacket>;
 
-  private currentWaypoint$: Subject<Waypoint>;
+  public currentWaypoint$: Observable<Waypoint> = EMPTY;
+
+  private currentWaypointSubject$: BehaviorSubject<Waypoint> = new BehaviorSubject(null);
 
   public constructor(socket: Socket, httpClient: HttpClient) {
     super(socket, httpClient);
+
+    this.currentWaypoint$ = this.currentWaypointSubject$;
   }
 
   public getGSVData(): Observable<GSVPacket> {
@@ -40,7 +44,7 @@ export class GpsService extends NmeaService {
       this.getRMC$ = this.getDataAsString().pipe(
         filter((line: string) => line.startsWith('$GPRMC')),
         map((line: string) => <RMCPacket>parseNmeaSentence(line)),
-        distinctUntilChanged((a, b) => _.isEqual(a, b)),
+        // distinctUntilChanged((a, b) => _.isEqual(a, b)),
       );
     }
 
@@ -59,19 +63,7 @@ export class GpsService extends NmeaService {
     return this.getGGA$;
   }
 
-  public getCurrentWaypoint(): Subject<Waypoint> {
-    if (!this.currentWaypoint$) {
-      this.currentWaypoint$ = new Subject();
-    }
-
-    return this.currentWaypoint$;
-  }
-
   public changeCurrentWaypoint(waypoint: Waypoint) {
-    if (!this.currentWaypoint$) {
-      this.currentWaypoint$ = new Subject();
-    }
-
-    this.currentWaypoint$.next(waypoint);
+    this.currentWaypointSubject$.next(waypoint);
   }
 }

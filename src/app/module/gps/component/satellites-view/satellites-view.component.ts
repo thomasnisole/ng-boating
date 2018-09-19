@@ -97,7 +97,7 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
     ctx.clearRect(0, 0, this.width, this.height);
 
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, this.width, this.chartHeight + CHART_MARGIN_TOP);
+    ctx.fillRect(0, 0, this.width, this.chartHeight + CHART_MARGIN_TOP + 1);
   }
 
   private drawDashedLine(): void {
@@ -114,19 +114,7 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
     ctx.stroke();
     ctx.closePath();
 
-    ctx.beginPath();
-    ctx.moveTo(0, this.chartHeight + CHART_MARGIN_TOP);
-    ctx.lineTo(this.width, this.chartHeight + CHART_MARGIN_TOP);
-    ctx.stroke();
-    ctx.closePath();
-
     ctx.setLineDash([5]);
-
-    ctx.beginPath();
-    ctx.moveTo(0, this.chartHeight / 4 + CHART_MARGIN_TOP);
-    ctx.lineTo(this.width, this.chartHeight / 4 + CHART_MARGIN_TOP);
-    ctx.stroke();
-    ctx.closePath();
 
     ctx.beginPath();
     ctx.moveTo(0, this.chartHeight / 2 + CHART_MARGIN_TOP);
@@ -135,8 +123,20 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
     ctx.closePath();
 
     ctx.beginPath();
-    ctx.moveTo(0, (this.chartHeight / 4) * 3 + CHART_MARGIN_TOP);
-    ctx.lineTo(this.width, (this.chartHeight / 4) * 3 + CHART_MARGIN_TOP);
+    ctx.moveTo(0, (this.chartHeight / 10) * 7 + CHART_MARGIN_TOP + 1);
+    ctx.lineTo(this.width, (this.chartHeight / 10) * 7 + CHART_MARGIN_TOP + 1);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.moveTo(0, (this.chartHeight / 10) * 8 + CHART_MARGIN_TOP + 1);
+    ctx.lineTo(this.width, (this.chartHeight / 10) * 8 + CHART_MARGIN_TOP + 1);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.moveTo(0, (this.chartHeight / 10) * 9 + CHART_MARGIN_TOP + 1);
+    ctx.lineTo(this.width, (this.chartHeight / 10) * 9 + CHART_MARGIN_TOP + 1);
     ctx.stroke();
     ctx.closePath();
   }

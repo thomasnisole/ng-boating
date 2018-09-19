@@ -4,7 +4,7 @@ import {filter, map, mergeMap} from 'rxjs/internal/operators';
 import {GpsService} from '../../module/core/service/gps.service';
 import {GGAPacket} from 'nmea-simple';
 import {Waypoint} from '../../module/core/model/waypoint.model';
-import {Subject} from 'rxjs/index';
+import {Observable, Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-layout',
@@ -17,7 +17,7 @@ export class LayoutComponent implements OnInit {
 
   public ggaPacket: GGAPacket;
 
-  public currentWaypoint$: Subject<Waypoint>;
+  public currentWaypoint$: Observable<Waypoint>;
 
   public constructor(private router: Router, private activatedRoute: ActivatedRoute, private gpsService: GpsService) {
     this.router
@@ -43,7 +43,7 @@ export class LayoutComponent implements OnInit {
       (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
     );
 
-    this.currentWaypoint$ = this.gpsService.getCurrentWaypoint();
+    this.currentWaypoint$ = this.gpsService.currentWaypoint$;
   }
 
   public isConnected(): boolean {
