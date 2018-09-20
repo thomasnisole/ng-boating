@@ -17,7 +17,7 @@
     </app-dial>
     <div class="d-flex">
       <app-dial [header]="'Cap'" [defaultBody]="'---'"
-                [body]="rmcData ? rmcData.trackTrue + '°' : ''" class="border-primary">
+                [body]="trackTrue ? trackTrue + '°' : ''" class="border-primary">
       </app-dial>
       <app-dial [header]="'Cap à suivre'" [defaultBody]="'---'"
                 [body]="orientation ? orientation + '°' : ''" class="border-white"></app-dial>

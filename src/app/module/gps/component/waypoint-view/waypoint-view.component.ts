@@ -25,9 +25,9 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
 
   public waypoint: Waypoint = null;
 
-  public distance: number = null;
+  public distance: string = null;
 
-  public orientation: number = null;
+  public orientation: string = null;
 
   public remainingTime: string = null;
 
@@ -76,21 +76,26 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
               .replace(/\d{1,2}[.]/g, (found: string) => leftPad(found, 3, '0'));
 
             if (this.waypoint) {
-              this.distance = this.distanceInNmBetweenEarthCoordinates(
+              const d: number = this.distanceInNmBetweenEarthCoordinates(
                 this.rmcData.latitude,
                 this.rmcData.longitude,
                 this.waypoint.lat,
                 this.waypoint.lng
-              ).toFixed(2);
+              );
+              this.distance = d.toFixed(2);
 
-              this.orientation = this.getBearing(
-                this.rmcData.latitude,
-                this.rmcData.longitude,
-                this.waypoint.lat,
-                this.waypoint.lng
-              ).toFixed(1);
+              this.orientation = leftPad(
+                this.getBearing(
+                  this.rmcData.latitude,
+                  this.rmcData.longitude,
+                  this.waypoint.lat,
+                  this.waypoint.lng
+                ).toFixed(1),
+                5,
+                '0'
+              );
 
-              this.remainingTime = this.getRemainingTime(this.distance, this.rmcData.speedKnots);
+              this.remainingTime = this.getRemainingTime(d, this.rmcData.speedKnots);
             }
           } else {
             this.coordAsString = null;
@@ -108,6 +113,14 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  public get trackTrue(): string {
+    if (!this.rmcData) {
+      return null;
+    }
+
+    return leftPad(this.rmcData.trackTrue.toFixed(1), 5, '0');
+  }
+
   private radians(n): number {
     return n * (Math.PI / 180);
   }
@@ -116,7 +129,7 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
     return n * (180 / Math.PI);
   }
 
-  private distanceInNmBetweenEarthCoordinates(lat1, lon1, lat2, lon2): number {
+  private distanceInNmBetweenEarthCoordinates(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const earthRadiusKm: number = 6371;
 
     const dLat: number = this.radians(lat2 - lat1);

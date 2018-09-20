@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
-import {Observable, Observer, of, Subject} from 'rxjs/index';
+import {BehaviorSubject, Observable, Observer} from 'rxjs/index';
 import {HttpClient} from '@angular/common/http';
 import {Port} from '../model/port.model';
-import {map, tap} from 'rxjs/internal/operators';
+import {filter, map, tap} from 'rxjs/internal/operators';
 import {Socket} from 'ngx-socket-io';
+import {environment} from '../../../../environments/environment';
 
 @Injectable()
 export class NmeaService {
 
-  private getData$: Subject<string>;
+  private data: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  public constructor(private socket: Socket, private httpClient: HttpClient) {}
+  public data$: Observable<string>;
+
+  public constructor(private socket: Socket, private httpClient: HttpClient) {
+    this.data$ = this.data.pipe(
+      filter((line: string) => line != null)
+    );
+  }
+
 
   public findAllPorts(): Observable<Port[]> {
     return this.httpClient
-      .get('http://localhost:80/nmea-ports')
+      .get(environment.backendUrl + 'nmea-ports')
       .pipe(
         map((ports: any) => ports.map((port: any) => new Port(
           port.comName,
@@ -33,6 +41,12 @@ export class NmeaService {
       this.socket.on('close', () => {
         observer.error('Close port');
       });
+
+      this.socket.on('data', (line: string) => {
+        console.log(line);
+        this.data.next(line);
+      });
+
       this.socket.emit(
         'open',
         {baudRate: baudRate, port: port},
@@ -46,17 +60,5 @@ export class NmeaService {
           observer.complete();
         });
     });
-  }
-
-  public getDataAsString(): Observable<string> {
-    if (!this.getData$) {
-      this.getData$ = new Subject();
-
-      this.socket.on('data', (line: string) => {
-        this.getData$.next(line);
-      });
-    }
-
-    return this.getData$;
   }
 }

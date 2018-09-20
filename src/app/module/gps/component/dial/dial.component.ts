@@ -28,7 +28,7 @@ export class DialComponent implements OnInit {
   }
 
   public get body(): string {
-    if (this._body && this._body !== '') {
+    if (this._body != null && this._body !== '') {
       return this._body;
     } else {
       return this.defaultBody;

@@ -39,7 +39,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
       .subscribe(
         (rmcData: RMCPacket) => {
           this.rmcData = rmcData;
-          console.log(this.rmcData);
 
           if (this.rmcData) {
             this.coordAsString = formatcoords(this.rmcData.latitude, this.rmcData.longitude)

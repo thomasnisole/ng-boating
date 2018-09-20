@@ -18,7 +18,7 @@ export class UserPreferencesService {
     }
 
     return this.http
-      .get('http://localhost:80/user-preferences')
+      .get(environment.backendUrl + 'user-preferences')
       .pipe(
         map((response: HttpResponse<UserPreferences>) => response),
         catchError((err: HttpErrorResponse, caught: Observable<UserPreferences>) => {
