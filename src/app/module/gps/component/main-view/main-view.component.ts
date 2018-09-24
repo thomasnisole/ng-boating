@@ -1,14 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GpsService} from '../../../core/service/gps.service';
-import {UserPreferencesService} from '../../../core/service/user-preferences.service';
-import {mergeMap} from 'rxjs/operators';
 import {RMCPacket} from 'nmea-simple';
 import * as formatcoords from 'formatcoords';
 import * as leftPad from 'left-pad';
-import {UserPreferences} from '../../../core/model/user-preferences.model';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/index';
-import {filter} from 'rxjs/internal/operators';
+import {filter, tap} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-main-view',
@@ -23,17 +20,12 @@ export class MainViewComponent implements OnInit, OnDestroy {
 
   public subscription: Subscription;
 
-  public constructor(private userPreferencesService: UserPreferencesService, private gpsService: GpsService, private router: Router) {
+  public constructor(private gpsService: GpsService, private router: Router) {
   }
 
   public ngOnInit(): void {
-    this.subscription = this.userPreferencesService.find()
+    this.subscription = this.gpsService.dataAsRMC$
       .pipe(
-        mergeMap((preferences: UserPreferences) => this.gpsService.open(preferences.baudRate, preferences.port)
-          .pipe(
-            mergeMap(() => this.gpsService.getRMCData())
-          )
-        ),
         filter((rmcData: RMCPacket) => rmcData.status === 'valid')
       )
       .subscribe(

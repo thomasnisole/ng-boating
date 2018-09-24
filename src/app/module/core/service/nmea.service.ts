@@ -1,24 +1,19 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, Observer} from 'rxjs/index';
+import {Injectable} from '@angular/core';
+import {EMPTY, Observable} from 'rxjs/index';
 import {HttpClient} from '@angular/common/http';
 import {Port} from '../model/port.model';
-import {filter, map, tap} from 'rxjs/internal/operators';
-import {Socket} from 'ngx-socket-io';
+import {map} from 'rxjs/internal/operators';
 import {environment} from '../../../../environments/environment';
+import {NmeaServerService} from './nmea-server.service';
 
 @Injectable()
 export class NmeaService {
 
-  private data: BehaviorSubject<string> = new BehaviorSubject(null);
+  public dataAsString$: Observable<string> = EMPTY;
 
-  public data$: Observable<string>;
-
-  public constructor(private socket: Socket, private httpClient: HttpClient) {
-    this.data$ = this.data.pipe(
-      filter((line: string) => line != null)
-    );
+  public constructor(private nmeaServerService: NmeaServerService, private httpClient: HttpClient) {
+    this.dataAsString$ = this.nmeaServerService.data$;
   }
-
 
   public findAllPorts(): Observable<Port[]> {
     return this.httpClient
@@ -30,35 +25,5 @@ export class NmeaService {
           port.pnpId
         )))
       );
-  }
-
-  public close(): Observable<boolean> {
-    return new Observable((observer: Observer<boolean>) => this.socket.emit('close', () => observer.next(false)));
-  }
-
-  public open(baudRate: number, port: string): Observable<boolean> {
-    return new Observable((observer: Observer<boolean>) => {
-      this.socket.on('close', () => {
-        observer.error('Close port');
-      });
-
-      this.socket.on('data', (line: string) => {
-        console.log(line);
-        this.data.next(line);
-      });
-
-      this.socket.emit(
-        'open',
-        {baudRate: baudRate, port: port},
-        (err) => {
-          if (err) {
-            observer.error(err);
-          } else {
-            observer.next(true);
-          }
-
-          observer.complete();
-        });
-    });
   }
 }

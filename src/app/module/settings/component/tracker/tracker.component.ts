@@ -115,7 +115,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
         this.logs.push(
           this.translateService.instant('settings.tracker.label.connected-on-port') + this.userPreferences.port
         );
-        this.getDataSubscription = this.gpsService.getDataAsString().subscribe(
+        this.getDataSubscription = this.gpsService.data$.subscribe(
           (line) => this.logs.push(line)
         );
       },

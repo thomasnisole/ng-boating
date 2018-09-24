@@ -39,7 +39,7 @@ export class LayoutComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.gpsService.getGGAData().subscribe(
+    this.gpsService.dataAsGGA$.subscribe(
       (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
     );
 
@@ -51,7 +51,11 @@ export class LayoutComponent implements OnInit {
       return false;
     }
 
-    return this.ggaPacket.fixType !== 'none';
+    if (!this.ggaPacket.fixType) {
+      return false;
+    }
+
+    return  this.ggaPacket.fixType !== 'none';
   }
 
   public cancelCurrentWaypoint(): void {

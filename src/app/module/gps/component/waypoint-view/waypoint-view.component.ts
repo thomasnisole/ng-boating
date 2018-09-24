@@ -50,14 +50,9 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
       (waypoint: Waypoint) => this.waypoint = waypoint
     );
 
-    this.subscription = this.userPreferencesService.find()
+    this.subscription = this.gpsService.dataAsRMC$
       .pipe(
-        mergeMap((preferences: UserPreferences) => this.gpsService.open(preferences.baudRate, preferences.port)
-          .pipe(
-            mergeMap(() => this.gpsService.getRMCData())
-          )
-        ),
-        filter((rmcData: RMCPacket) => rmcData.status === 'valid'),
+        filter((rmcData: RMCPacket) => rmcData.status === 'valid')
       )
       .subscribe(
         (rmcData: RMCPacket) => {

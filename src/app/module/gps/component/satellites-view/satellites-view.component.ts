@@ -58,36 +58,28 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
     this.drawArea();
     this.drawDashedLine();
 
-    this.subscription = this.userPreferencesService.find()
-      .pipe(
-        mergeMap((preferences: UserPreferences) => this.gpsService.open(preferences.baudRate, preferences.port)
-          .pipe(
-            mergeMap(() => this.gpsService.getGSVData())
-          )
-        )
-      )
-      .subscribe(
-        (gsvData: GSVPacket) => {
-          this.gsvPacket = gsvData;
+    this.subscription = this.gpsService.dataAsGSV$.subscribe(
+      (gsvData: GSVPacket) => {
+        this.gsvPacket = gsvData;
 
-          if (this.gsvPacket.messageNumber === 1) {
-            this.satellites.splice(0, this.satellites.length);
-          }
-
-          this.gsvPacket.satellites.forEach((s: Satellite) => {
-            this.satellites.push(s);
-          });
-
-          if (this.gsvPacket.messageNumber === this.gsvPacket.numberOfMessages) {
-            this.drawArea();
-            this.drawDashedLine();
-            this.drawSNRChart();
-          }
-        },
-        (err: Error) => {
-          console.log(err);
+        if (this.gsvPacket.messageNumber === 1) {
+          this.satellites.splice(0, this.satellites.length);
         }
-      );
+
+        this.gsvPacket.satellites.forEach((s: Satellite) => {
+          this.satellites.push(s);
+        });
+
+        if (this.gsvPacket.messageNumber === this.gsvPacket.numberOfMessages) {
+          this.drawArea();
+          this.drawDashedLine();
+          this.drawSNRChart();
+        }
+      },
+      (err: Error) => {
+        console.log(err);
+      }
+    );
   }
 
   private drawArea(): void {
