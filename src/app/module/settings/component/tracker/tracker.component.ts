@@ -4,9 +4,9 @@ import {GpsService} from '../../../core/service/gps.service';
 import {UserPreferencesService} from '../../../core/service/user-preferences.service';
 import {environment} from '../../../../../environments/environment';
 import {EMPTY, Observable, of, Subscription} from 'rxjs/index';
-import {TranslateService} from '@ngx-translate/core';
 import {catchError, map, mergeMap, tap} from 'rxjs/internal/operators';
 import {UserPreferences} from '../../../core/model/user-preferences.model';
+import {Packet} from 'nmea-simple';
 
 @Component({
   selector: 'app-tracker',
@@ -31,8 +31,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
   public constructor(
     private gpsService: GpsService,
-    private userPreferencesService: UserPreferencesService,
-    private translateService: TranslateService) {
+    private userPreferencesService: UserPreferencesService) {
     this.baudRates = environment.baudRates;
   }
 
@@ -110,18 +109,8 @@ export class TrackerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.openSubscription = this.gpsService.open(this.userPreferences.baudRate, this.userPreferences.port).subscribe(
-      () => {
-        this.logs.push(
-          this.translateService.instant('settings.tracker.label.connected-on-port') + this.userPreferences.port
-        );
-        this.getDataSubscription = this.gpsService.data$.subscribe(
-          (line) => this.logs.push(line)
-        );
-      },
-      (err) => {
-        this.logs.push(err);
-      }
-    );
+    /*this.openSubscription = this.gpsService.dataAsString$.subscribe(
+      (packet: Packet) => this.logs.push(packet.toString())
+    );*/
   }
 }

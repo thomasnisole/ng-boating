@@ -24,7 +24,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscription = this.gpsService.dataAsRMC$
+    this.subscription = this.gpsService.getGPRMC()
       .pipe(
         filter((rmcData: RMCPacket) => rmcData.status === 'valid')
       )

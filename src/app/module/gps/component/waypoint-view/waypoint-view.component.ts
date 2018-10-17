@@ -1,15 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GpsService} from '../../../core/service/gps.service';
-import {UserPreferencesService} from '../../../core/service/user-preferences.service';
-import {mergeMap} from 'rxjs/operators';
 import {RMCPacket} from 'nmea-simple';
 import * as formatcoords from 'formatcoords';
 import * as leftPad from 'left-pad';
-import {UserPreferences} from '../../../core/model/user-preferences.model';
-import {filter, map, tap} from 'rxjs/internal/operators';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {filter} from 'rxjs/internal/operators';
+import {Router} from '@angular/router';
 import {Waypoint} from '../../../core/model/waypoint.model';
-import {WaypointService} from '../../../core/service/waypoint.service';
 import {Subscription} from 'rxjs/index';
 
 @Component({
@@ -34,7 +30,6 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   public constructor(
-    private userPreferencesService: UserPreferencesService,
     private gpsService: GpsService,
     private router: Router) {
   }
@@ -47,10 +42,16 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.gpsService.currentWaypoint$.subscribe(
-      (waypoint: Waypoint) => this.waypoint = waypoint
+      (waypoint: Waypoint) => {
+        this.waypoint = waypoint;
+        this.distance = null;
+        this.orientation = null;
+        this.remainingTime = null;
+      },
     );
 
-    this.subscription = this.gpsService.dataAsRMC$
+
+    this.subscription = this.gpsService.getGPRMC()
       .pipe(
         filter((rmcData: RMCPacket) => rmcData.status === 'valid')
       )

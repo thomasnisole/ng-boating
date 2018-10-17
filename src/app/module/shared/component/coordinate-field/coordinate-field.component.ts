@@ -103,7 +103,7 @@ export class CoordinateFieldComponent implements OnInit {
     this.onCoordinateChange();
   }
 
-  private onCoordinateChange(): void {
+  public onCoordinateChange(): void {
     try {
       let coord: string = '';
 

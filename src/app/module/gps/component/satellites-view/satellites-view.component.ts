@@ -1,8 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GpsService} from '../../../core/service/gps.service';
 import {UserPreferencesService} from '../../../core/service/user-preferences.service';
-import {UserPreferences} from '../../../core/model/user-preferences.model';
-import {mergeMap} from 'rxjs/internal/operators';
 import {GSVPacket} from 'nmea-simple';
 import {Satellite} from 'nmea-simple/dist/codecs/GSV';
 import {Router} from '@angular/router';
@@ -58,8 +56,9 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
     this.drawArea();
     this.drawDashedLine();
 
-    this.subscription = this.gpsService.dataAsGSV$.subscribe(
+    this.subscription = this.gpsService.getGPGSV().subscribe(
       (gsvData: GSVPacket) => {
+        console.log(gsvData);
         this.gsvPacket = gsvData;
 
         if (this.gsvPacket.messageNumber === 1) {

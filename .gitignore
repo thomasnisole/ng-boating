@@ -38,7 +38,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-./main.js
 
-src/serial-port*.js
-./main.js
+package-lock.json
