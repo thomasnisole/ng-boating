@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Socket} from 'ngx-socket-io';
-import {BehaviorSubject, EMPTY, Observable} from 'rxjs/index';
+import {BehaviorSubject, EMPTY, iif, Observable} from 'rxjs/index';
 import {filter, finalize, map} from 'rxjs/internal/operators';
 import {Packet, parseNmeaSentence} from 'nmea-simple';
 
@@ -15,7 +15,7 @@ export class NmeaClientService {
 
   private subjectError: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  private packets: Observable<Packet>[] = [];
+  private packets: Observable<Packet|string>[] = [];
 
   private counters: number[] = [];
 
@@ -75,27 +75,24 @@ export class NmeaClientService {
     });
   }
 
-  public getSubject(sentenceType: string): Observable<Packet> {
+  public getSubject(sentenceType: string): Observable<Packet|string> {
     if (!this.packets[sentenceType]) {
       const subject: BehaviorSubject<string> = new BehaviorSubject<string>('');
       this.packets[sentenceType] = subject.pipe(
         filter(() => this.connected),
         filter((line: string) => line != null),
         filter((line: string) => line !== ''),
-        map((line: string) => parseNmeaSentence(line)),
+        map((line: string) => sentenceType !== 'ALL' ? parseNmeaSentence(line) : line),
         finalize(() => {
-          console.log('finalize', '/nmea/' + sentenceType, this.counters[sentenceType]);
           this.counters[sentenceType]--;
           if (this.counters[sentenceType] === 0) {
             this.socket.removeListener('/nmea/' + sentenceType);
+            this.packets[sentenceType] = null;
           }
         })
       );
-      console.log(this.socket);
-      this.socket.on('/nmea/' + sentenceType, (line: string) => {
-        console.log('/nmea/' + sentenceType, line);
-        subject.next(line);
-      });
+
+      this.socket.on('/nmea/' + sentenceType, (line: string) => subject.next(line));
       this.counters[sentenceType] = 0;
     }
 

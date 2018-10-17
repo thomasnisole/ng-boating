@@ -75,7 +75,6 @@ export class WaypointComponent implements OnInit {
 
         this.waypointService.delete(result).subscribe(
           () => {
-            console.log('cucou');
             this.router.navigate(['app', 'waypoints']);
           },
           () => this.toastr.error(this.translateService.instant('error.an-error-occurred'))

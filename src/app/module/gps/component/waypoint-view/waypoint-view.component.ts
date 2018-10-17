@@ -96,9 +96,6 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
           } else {
             this.coordAsString = null;
           }
-        },
-        (err: Error) => {
-          console.log(err);
         }
       );
   }

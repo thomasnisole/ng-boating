@@ -46,9 +46,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
           } else {
             this.coordAsString = null;
           }
-        },
-        (err: Error) => {
-          console.log(err);
         }
       );
   }

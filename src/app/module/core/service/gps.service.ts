@@ -14,8 +14,8 @@ export class GpsService extends NmeaService {
 
   public currentWaypoint$: Observable<Waypoint> = EMPTY;
 
-  public constructor(private nmeaClientService: NmeaClientService, httpClient: HttpClient) {
-    super(httpClient);
+  public constructor(nmeaClientService: NmeaClientService, httpClient: HttpClient) {
+    super(nmeaClientService, httpClient);
 
     this.currentWaypoint$ = this.currentWaypoint;
   }

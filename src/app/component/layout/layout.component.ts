@@ -22,7 +22,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public currentWaypoint$: Observable<Waypoint>;
 
   public constructor(private router: Router, private activatedRoute: ActivatedRoute, private gpsService: GpsService) {
-    this.ggaPacketSubscription = this.router
+    this.router
       .events
       .pipe(
         filter((event: any) => event instanceof NavigationEnd),
@@ -41,7 +41,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.gpsService.getGPGGA().subscribe(
+    this.ggaPacketSubscription = this.gpsService.getGPGGA().subscribe(
       (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
     );
 

@@ -6,7 +6,6 @@ import {environment} from '../../../../../environments/environment';
 import {EMPTY, Observable, of, Subscription} from 'rxjs/index';
 import {catchError, map, mergeMap, tap} from 'rxjs/internal/operators';
 import {UserPreferences} from '../../../core/model/user-preferences.model';
-import {Packet} from 'nmea-simple';
 
 @Component({
   selector: 'app-tracker',
@@ -109,8 +108,8 @@ export class TrackerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    /*this.openSubscription = this.gpsService.dataAsString$.subscribe(
-      (packet: Packet) => this.logs.push(packet.toString())
-    );*/
+    this.openSubscription = this.gpsService.getAll().subscribe(
+      (line: string) => this.logs.push(line)
+    );
   }
 }

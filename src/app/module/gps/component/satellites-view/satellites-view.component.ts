@@ -58,7 +58,6 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
 
     this.subscription = this.gpsService.getGPGSV().subscribe(
       (gsvData: GSVPacket) => {
-        console.log(gsvData);
         this.gsvPacket = gsvData;
 
         if (this.gsvPacket.messageNumber === 1) {
@@ -74,9 +73,6 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
           this.drawDashedLine();
           this.drawSNRChart();
         }
-      },
-      (err: Error) => {
-        console.log(err);
       }
     );
   }

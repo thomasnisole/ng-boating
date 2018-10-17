@@ -4,10 +4,12 @@ import {HttpClient} from '@angular/common/http';
 import {Port} from '../model/port.model';
 import {map} from 'rxjs/internal/operators';
 import {environment} from '../../../../environments/environment';
+import {Packet} from 'nmea-simple';
+import {NmeaClientService} from './nmea-client.service';
 
 export abstract class NmeaService {
 
-  public constructor(private httpClient: HttpClient) {}
+  public constructor(protected nmeaClientService: NmeaClientService, protected httpClient: HttpClient) {}
 
   public findAllPorts(): Observable<Port[]> {
     return this.httpClient
@@ -19,5 +21,9 @@ export abstract class NmeaService {
           port.pnpId
         )))
       );
+  }
+
+  public getAll(): Observable<string> {
+    return this.nmeaClientService.getSubject('ALL');
   }
 }
