@@ -24,6 +24,6 @@ export abstract class NmeaService {
   }
 
   public getAll(): Observable<string> {
-    return this.nmeaClientService.getSubject('ALL');
+    return <Observable<string>>this.nmeaClientService.getSubject('ALL');
   }
 }
