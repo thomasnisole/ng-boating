@@ -7,8 +7,6 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
-      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -16,8 +14,8 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -34,13 +32,24 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "dev": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.dev.ts"
                 }
-              ],
+              ]
+            },
+            "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -49,7 +58,13 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             }
           }
         },
@@ -59,6 +74,9 @@
             "browserTarget": "ng-boating:build"
           },
           "configurations": {
+            "dev": {
+              "browserTarget": "ng-boating:build:dev"
+            },
             "production": {
               "browserTarget": "ng-boating:build:production"
             }
@@ -74,13 +92,13 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": "src/polyfills-test.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
+            "scripts": [],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -106,7 +124,7 @@
       }
     },
     "ng-boating-e2e": {
-      "root": "e2e/",
+      "root": "e2e",
       "projectType": "application",
       "architect": {
         "e2e": {
@@ -119,7 +137,9 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]
@@ -131,8 +151,11 @@
   "defaultProject": "ng-boating",
   "schematics": {
     "@schematics/angular:component": {
+      "prefix": "app",
       "styleext": "scss"
     },
-    "@schematics/angular:directive": {}
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
   }
 }

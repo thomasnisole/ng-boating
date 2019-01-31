@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import { MenuComponent } from './component/menu/menu.component';
@@ -11,9 +10,11 @@ import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {SharedModule} from './module/shared/shared.module';
 import {SocketIoModule} from 'ngx-socket-io';
-import {AppGuardService} from './service/app-guard.service';
+import {UserPreferencesGuard} from './module/system/guard/user-preferences.guard';
 import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrModule} from 'ngx-toastr';
+import {environment} from '../environments/environment';
+import {SystemModule} from './module/system/system.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -33,7 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgbModalModule,
     SharedModule,
     SocketIoModule.forRoot({
-      url: 'http://localhost:80'
+      url: environment.backendUrl
     }),
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
@@ -42,10 +43,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    SystemModule
   ],
   providers: [
-    AppGuardService
+    UserPreferencesGuard
   ],
   bootstrap: [AppComponent]
 })

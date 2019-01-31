@@ -1,42 +1,50 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {UserPreferences} from '../model/user-preferences.model';
 import {environment} from '../../../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {catchError, map, mergeMap, share, tap} from 'rxjs/internal/operators';
-import {EMPTY, Observable, of} from 'rxjs/index';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {NgxTsDeserializerService, NgxTsSerializerService} from 'ngx-ts-serializer';
+import {ElectronService} from '../../system/service/electron.service';
+import {filter} from 'rxjs/operators';
 
 @Injectable()
 export class UserPreferencesService {
 
-  private userPreferences: UserPreferences;
+  private userPreferencesSubject: BehaviorSubject<UserPreferences>;
 
-  public constructor(private http: HttpClient) {}
+  private filePath: string = '';
 
-  public find(): Observable<UserPreferences> {
-    if (this.userPreferences) {
-      return of(this.userPreferences);
+  private readonly userPreferencesFileName: string = 'user-preferences.json';
+
+  public constructor(private deserializer: NgxTsDeserializerService,
+                     private serializer: NgxTsSerializerService,
+                     private electronService: ElectronService) {
+    this.filePath = this.electronService.os.homedir() + '/.ng-boating';
+    this.userPreferencesSubject = new BehaviorSubject(null);
+
+    if (!this.electronService.fs.existsSync(this.filePath + '/' + this.userPreferencesFileName)) {
+      this.update(this.deserializer.deserialize(UserPreferences, environment.defaultUserPreferences));
+    } else {
+      this.userPreferencesSubject.next(this.deserializer.deserialize(UserPreferences, JSON.parse(
+        this.electronService.fs.readFileSync(this.filePath + '/' + this.userPreferencesFileName, 'utf8')
+      )));
     }
-
-    return this.http
-      .get(environment.backendUrl + 'user-preferences')
-      .pipe(
-        map((response: HttpResponse<UserPreferences>) => response),
-        catchError((err: HttpErrorResponse, caught: Observable<UserPreferences>) => {
-          if (err.status === 404) {
-            return this.update(environment.defaultUserPreferences).pipe(
-              mergeMap(() => caught)
-            );
-          }
-
-          return EMPTY;
-        }),
-        tap((userPreferences: UserPreferences) => this.userPreferences = userPreferences)
-      );
   }
 
-  public update(userPreferences: UserPreferences): Observable<any> {
-    return this.http.post('http://localhost:80/user-preferences', userPreferences).pipe(
-      tap(() => this.userPreferences = null)
+  public find(): Observable<UserPreferences> {
+    return this.userPreferencesSubject.pipe(
+      filter((up: UserPreferences) => !!up)
     );
+  }
+
+  public update(userPreferences: UserPreferences): void {
+    if (!this.electronService.fs.existsSync(this.filePath)) {
+      this.electronService.fs.mkdirSync(this.filePath);
+    }
+
+    this.electronService.fs.writeFileSync(
+      this.filePath + '/' + this.userPreferencesFileName,
+      JSON.stringify(this.serializer.serialize(userPreferences))
+    );
+    this.userPreferencesSubject.next(userPreferences);
   }
 }

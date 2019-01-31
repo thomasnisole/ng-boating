@@ -4,7 +4,7 @@ import {filter, map, mergeMap} from 'rxjs/internal/operators';
 import {GpsService} from '../../module/core/service/gps.service';
 import {GGAPacket} from 'nmea-simple';
 import {Waypoint} from '../../module/core/model/waypoint.model';
-import {Observable, Subscription} from 'rxjs/index';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-layout',

@@ -1,4 +1,4 @@
-<div class="d-flex h-100" (swipe)="onSwipe($event)">
+<div class="d-flex h-100" (click)="onClick()">
   <div class="left-side">
     <app-dial [header]="'gps.dial-title.coordinates'|translate" [defaultBody]="'----'"
               [body]="coordAsString" class="border-warning">

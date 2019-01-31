@@ -3,7 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {UserPreferencesService} from '../../../core/service/user-preferences.service';
 import {UserPreferences} from '../../../core/model/user-preferences.model';
 import {tap} from 'rxjs/internal/operators';
-import {Observable} from 'rxjs/index';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-general',
@@ -27,8 +27,7 @@ export class GeneralComponent implements OnInit {
   }
 
   public onLanguageChange(): void {
-    this.userPreferencesService.update(this.userPreferences).subscribe(
-      () => this.translateService.use(this.userPreferences.language)
-    );
+    this.userPreferencesService.update(this.userPreferences);
+    this.translateService.use(this.userPreferences.language);
   }
 }

@@ -7,6 +7,7 @@ import {CoordinateFieldComponent} from './component/coordinate-field/coordinate-
 import {LatitudeFieldComponent} from './component/latitude-field/latitude-field.component';
 import {Ng2FittextModule} from 'ng2-fittext/src/ng2-fittext.module';
 import {LongitudeFieldComponent} from './component/longitude-field/longitude-field.component';
+import {NgxTsSerializerModule} from 'ngx-ts-serializer';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import {LongitudeFieldComponent} from './component/longitude-field/longitude-fie
     FormsModule,
     HttpClientModule,
     Ng2FittextModule,
+    NgxTsSerializerModule,
     TranslateModule
   ],
   exports: [

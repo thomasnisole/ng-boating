@@ -4,12 +4,13 @@ import {UserPreferencesService} from '../../../core/service/user-preferences.ser
 import {GSVPacket} from 'nmea-simple';
 import {Satellite} from 'nmea-simple/dist/codecs/GSV';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs/index';
 import * as leftPad from 'left-pad';
+import {Subscription} from 'rxjs';
 
 const CHART_MARGIN_TOP: number      = 20;
 const CHART_MARGIN_BOTTOM: number   = 20;
-const RECT_SATELLITE_SPACE: number  = 10;
+const SATELLITE_SPACE: number       = 10;
+const SATELLITE_MAX_WIDTH: number   = 50;
 const CHART_FONT_SIZE: number       = 15;
 
 @Component({
@@ -131,11 +132,14 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
   private drawSNRChart(): void {
     const fontSize: number = 20;
     const colors: string[] = ['#00ff01', '#daff01', '#fefe05', '#ff7e02', '#fe0000'];
-    const space: number = 10;
 
     const satellitesCount: number = this.satellites.length;
-    const widthAvailable: number = this.width - ((satellitesCount - 1) * space);
-    const satelliteWidth: number = widthAvailable / satellitesCount;
+    const widthAvailable: number = this.width - ((satellitesCount - 1) * SATELLITE_SPACE);
+    let satelliteWidth: number = widthAvailable / satellitesCount;
+
+    if (satelliteWidth > SATELLITE_MAX_WIDTH) {
+      satelliteWidth = SATELLITE_MAX_WIDTH;
+    }
     let currentX: number = 0;
 
     this.satellites.forEach((satellite: Satellite) => {
@@ -180,15 +184,11 @@ export class SatellitesViewComponent implements OnInit, OnDestroy {
         );
       }
 
-      currentX = currentX + satelliteWidth + space;
+      currentX = currentX + satelliteWidth + SATELLITE_SPACE;
     });
   }
 
-  public onSwipe($event): void {
-    switch ($event.direction) {
-      case 2:
-        this.router.navigate(['app', 'gps', 'main']);
-        break;
-    }
+  public onClick(): void {
+    this.router.navigate(['app', 'gps', 'main']);
   }
 }

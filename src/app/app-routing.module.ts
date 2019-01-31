@@ -2,13 +2,13 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {MenuComponent} from './component/menu/menu.component';
 import {LayoutComponent} from './component/layout/layout.component';
-import {AppGuardService} from './service/app-guard.service';
+import {UserPreferencesGuard} from './module/system/guard/user-preferences.guard';
 
 const routes: Routes = [
   {
     path: '',
     canActivate: [
-      AppGuardService
+      UserPreferencesGuard
     ],
     children: [
       {

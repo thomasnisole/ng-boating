@@ -1,42 +1,44 @@
 import {Injectable} from '@angular/core';
-import {EMPTY, Observable, throwError} from 'rxjs/index';
+import {Observable} from 'rxjs';
 import {Waypoint} from '../model/waypoint.model';
 import {HttpClient} from '@angular/common/http';
-import {map, tap} from 'rxjs/internal/operators';
-import {deserialize, serialize} from 'json-typescript-mapper';
+import {map} from 'rxjs/internal/operators';
 import * as uuid from 'uuid';
 import {environment} from '../../../../environments/environment';
+import {NgxTsDeserializerService, NgxTsSerializerService} from 'ngx-ts-serializer';
 
 @Injectable()
 export class WaypointService {
 
-  public constructor(private httpClient: HttpClient) {
+  public constructor(private httpClient: HttpClient,
+                     private deserializer: NgxTsDeserializerService,
+                     private serializer: NgxTsSerializerService) {
   }
 
   public findAll(): Observable<Waypoint[]> {
     return this.httpClient.get(environment.backendUrl + 'waypoints')
       .pipe(
-        map((waypoints: any[]) => waypoints.map((waypoint: any) => deserialize(Waypoint, waypoint)))
+        map((waypoints: any[]) => this.deserializer.deserialize(Waypoint, waypoints))
       );
   }
 
   public findById(id: string): Observable<Waypoint> {
     return this.httpClient.get(environment.backendUrl + 'waypoints/' + id)
       .pipe(
-        map((waypoint: any) => deserialize(Waypoint, waypoint))
+        map((waypoint: any) => this.deserializer.deserialize(Waypoint, waypoint))
       );
   }
 
   public add(waypoint: Waypoint): Observable<Waypoint> {
     waypoint.id = uuid();
 
-    return this.httpClient.post(environment.backendUrl + 'waypoints', serialize(waypoint)).pipe(
+    return this.httpClient.post(environment.backendUrl + 'waypoints', this.serializer.serialize(waypoint)).pipe(
       map(() => waypoint)
     );
   }
 
   public update(waypoint: Waypoint): Observable<Waypoint> {
-    return this.httpClient.put(environment.backendUrl + 'waypoints/' + waypoint.id, serialize(waypoint)).pipe(
+    return this.httpClient.put(environment.backendUrl + 'waypoints/' + waypoint.id, this.serializer.serialize(waypoint)).pipe(
       map(() => waypoint)
     );
   }

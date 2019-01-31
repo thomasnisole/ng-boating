@@ -1,4 +1,4 @@
-import {JsonProperty} from 'json-typescript-mapper';
+import {JsonProperty} from 'ts-serializer-core';
 
 export class Waypoint {
 

@@ -1,8 +1,5 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -20,9 +17,10 @@
     ]
   },
   "include": [
-    "main.ts",
-    "src/**/*",
-    "node_modules/ng2-fittext/src/ng2-fittext.module.ts",
-    "node_modules/ng2-fittext/src/directives/ng2-fittext.directive.ts"
+    "main.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
   ]
 }

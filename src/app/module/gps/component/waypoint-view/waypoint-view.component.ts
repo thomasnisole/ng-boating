@@ -6,7 +6,7 @@ import * as leftPad from 'left-pad';
 import {filter} from 'rxjs/internal/operators';
 import {Router} from '@angular/router';
 import {Waypoint} from '../../../core/model/waypoint.model';
-import {Subscription} from 'rxjs/index';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-waypoint-view',
@@ -100,10 +100,8 @@ export class WaypointViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  public onSwipe($event): void {
-    if ($event.direction === 4) {
-      this.router.navigate(['app', 'gps', 'main']);
-    }
+  public onClick(): void {
+    this.router.navigate(['app', 'gps', 'satellites']);
   }
 
   public get trackTrue(): string {

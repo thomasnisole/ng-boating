@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, EMPTY, Observable} from 'rxjs/index';
-import {Packet, GGAPacket, GSVPacket, RMCPacket} from 'nmea-simple';
+import {BehaviorSubject, EMPTY, Observable} from 'rxjs';
 import {NmeaService} from './nmea.service';
-import {filter, map} from 'rxjs/internal/operators';
-import {HttpClient} from '@angular/common/http';
 import {Waypoint} from '../model/waypoint.model';
 import {NmeaClientService} from './nmea-client.service';
+import {GGAPacket, GSVPacket, parseNmeaSentence, RMCPacket} from 'nmea-simple';
+import {filter, map} from 'rxjs/operators';
 
 @Injectable()
 export class GpsService extends NmeaService {
@@ -14,8 +13,8 @@ export class GpsService extends NmeaService {
 
   public currentWaypoint$: Observable<Waypoint> = EMPTY;
 
-  public constructor(nmeaClientService: NmeaClientService, httpClient: HttpClient) {
-    super(nmeaClientService, httpClient);
+  public constructor(nmeaClientService: NmeaClientService) {
+    super(nmeaClientService);
 
     this.currentWaypoint$ = this.currentWaypoint;
   }
@@ -25,20 +24,23 @@ export class GpsService extends NmeaService {
   }
 
   public getGPRMC(): Observable<RMCPacket> {
-    return this.nmeaClientService.getSubject('GPRMC').pipe(
-      map((packet: Packet) => <RMCPacket>packet)
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPRMC')),
+      map((line: string) => <RMCPacket>parseNmeaSentence(line))
     );
   }
 
   public getGPGSV(): Observable<GSVPacket> {
-    return this.nmeaClientService.getSubject('GPGSV').pipe(
-      map((packet: Packet) => <GSVPacket>packet)
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPGSV')),
+      map((line: string) => <GSVPacket>parseNmeaSentence(line)),
     );
   }
 
   public getGPGGA(): Observable<GGAPacket> {
-    return this.nmeaClientService.getSubject('GPGGA').pipe(
-      map((packet: Packet) => <GGAPacket>packet)
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPGGA')),
+      map((line: string) => <GGAPacket>parseNmeaSentence(line))
     );
   }
 }

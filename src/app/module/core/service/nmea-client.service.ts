@@ -1,103 +1,92 @@
-import {Injectable} from '@angular/core';
-import {Socket} from 'ngx-socket-io';
-import {BehaviorSubject, EMPTY, iif, Observable} from 'rxjs/index';
-import {filter, finalize, map} from 'rxjs/internal/operators';
-import {Packet, parseNmeaSentence} from 'nmea-simple';
+import {Injectable, NgZone} from '@angular/core';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {SerialPort, parsers} from 'serialport';
+import {ElectronService} from '../../system/service/electron.service';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {filter} from 'rxjs/operators';
 
 @Injectable()
 export class NmeaClientService {
 
-  private connected: boolean = false;
+  private parser: parsers.Readline;
 
-  private subjectConnected: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private port: SerialPort;
 
-  private subjectOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private connected$: BehaviorSubject<boolean>;
 
-  private subjectError: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  private error$: BehaviorSubject<string>;
 
-  private packets: Observable<Packet|string>[] = [];
+  private packet: Subject<string>;
 
-  private counters: number[] = [];
-
-  public connected$: Observable<boolean> = EMPTY;
-
-  public open$: Observable<boolean> = EMPTY;
-
-  public error$: Observable<string> = EMPTY;
-
-  public constructor(private socket: Socket) {
-    this.connected$ = this.subjectConnected;
-    this.open$ = this.subjectOpen;
-    this.error$ = this.subjectError.pipe(
-      filter((err) => !!err)
-    );
-
-    this.socket.on('disconnect', (reason) => {
-      this.subjectError.next(reason);
-      this.connected = false;
-      this.subjectConnected.next(false);
+  public constructor(private electronService: ElectronService, private zone: NgZone) {
+    this.parser = new electronService.SerialPort.parsers.Readline({
+      delimiter: '\r\n'
     });
-    this.socket.on('connect', () => {
-      this.connected = true;
-      this.subjectConnected.next(true);
-      this.subjectOpen.next(false);
+    this.parser.on('data', (line) => {
+      // fs.appendFileSync('C:/tmp/trace.nmea', line.toString() + '\r\n');
+      this.zone.run(() => this.packet.next(line));
     });
 
-    this.socket.on('closePort', () => {
-      this.subjectOpen.next(false);
-    });
+    this.connected$ = new BehaviorSubject(false);
+    this.error$ = new BehaviorSubject(null);
+    this.packet = new BehaviorSubject(null);
+  }
+
+  public findAllPorts(): Observable<any[]> {
+    return fromPromise(this.electronService.SerialPort.list());
   }
 
   public open(baudRate: number, port: string): Observable<boolean> {
-    this.socket.emit(
-      'openPort',
-      {baudRate: baudRate, port: port},
+    console.log('open', baudRate, port);
+    this.port = new this.electronService.SerialPort(
+      port,
+      {
+        autoOpen: false,
+        baudRate: baudRate,
+        lock: false
+      },
       (err) => {
         if (err) {
-          this.subjectError.next(err);
-          this.subjectOpen.next(false);
+          this.port = null;
+
+          this.connected$.next(false);
+          this.connected$.thrownError(err.toString());
+          this.error$.next(err);
         } else {
-          this.subjectOpen.next(true);
+          console.log('opened', port);
+          this.connected$.next(true);
         }
       }
     );
 
-    return this.open$;
+    this.port.on('close', () => {
+      console.log('closed', port);
+      this.connected$.next(false);
+    });
+
+    this.port.pipe(this.parser);
+
+    this.port.open();
+
+    return this.connected$;
   }
 
   public close(): void {
-    this.socket.emit('close', (err) => {
-      if (err) {
-        this.subjectError.next(err);
-      } else {
-        this.subjectOpen.next(false);
-      }
+    this.port.close(() => {
+      this.connected$.next(false);
+      this.port = null;
     });
   }
 
-  public getSubject(sentenceType: string): Observable<Packet|string> {
-    if (!this.packets[sentenceType]) {
-      const subject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-      this.packets[sentenceType] = subject.pipe(
-        filter(() => this.connected),
-        filter((line: string) => line != null),
-        filter((line: string) => line !== ''),
-        map((line: string) => sentenceType !== 'ALL' ? parseNmeaSentence(line) : line),
-        finalize(() => {
-          this.counters[sentenceType]--;
-          if (this.counters[sentenceType] === 0) {
-            this.socket.removeListener('/nmea/' + sentenceType);
-            this.packets[sentenceType] = null;
-          }
-        })
-      );
+  public onError(): Observable<string> {
+    return this.error$.pipe(
+      filter((err) => !!err)
+    );
+  }
 
-      this.socket.on('/nmea/' + sentenceType, (line: string) => subject.next(line));
-      this.counters[sentenceType] = 0;
-    }
-
-    this.counters[sentenceType]++;
-
-    return this.packets[sentenceType];
+  public getPacket(): Observable<string> {
+    return this.packet.pipe(
+      filter((line: string) => line != null && line !== '')
+    );
   }
 }
