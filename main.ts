@@ -1,6 +1,7 @@
-import { app, BrowserWindow, screen } from 'electron';
+import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import {environment} from './src/environments/environment';
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -21,10 +22,11 @@ function createWindow() {
     // height: 600,
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`,
-    fullscreen: true,
-    webPreferences : {
-      webSecurity : false,
-      allowRunningInsecureContent: true
+    fullscreen: environment.production,
+    webPreferences: {
+      webSecurity: false,
+      allowRunningInsecureContent: true,
+      devTools: !environment.production
     }
   });
 
