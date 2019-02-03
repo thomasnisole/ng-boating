@@ -45,7 +45,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
     );
 
-    this.currentWaypoint$ = this.gpsService.currentWaypoint$;
+    this.currentWaypoint$ = this.gpsService.getCurrentWaypoint();
   }
 
   public ngOnDestroy(): void {

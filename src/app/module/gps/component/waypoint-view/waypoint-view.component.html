@@ -1,26 +1,26 @@
 <div class="d-flex h-100" (click)="onClick()">
   <div class="left-side">
     <app-dial [header]="'gps.dial-title.coordinates'|translate" [defaultBody]="'----'"
-              [body]="coordAsString" class="border-warning">
+              [body]="coordAsString$|async" class="border-warning">
     </app-dial>
     <app-dial [header]="'gps.dial-title.distance-to-go'|translate" [defaultBody]="'--'"
-              [body]="distance" [footer]="'Mn'" class="border-danger">
+              [body]="distance$|async" [footer]="'Mn'" class="border-danger">
     </app-dial>
     <app-dial [header]="'gps.dial-title.eta'|translate" [defaultBody]="'--:--'"
-              [body]="remainingTime" class="border-secondary">
+              [body]="remainingTime$|async" class="border-secondary">
     </app-dial>
   </div>
 
   <div class="right-side">
     <app-dial [header]="'gps.dial-title.speed'|translate" [defaultBody]="'--'"
-              [body]="rmcData?.speedKnots" [footer]="'Kts'" class="border-success">
+              [body]="speed$|async" [footer]="'Kts'" class="border-success">
     </app-dial>
     <div class="d-flex">
       <app-dial [header]="'Cap'" [defaultBody]="'---'"
-                [body]="trackTrue ? trackTrue + '°' : ''" class="border-primary">
+                [body]="trackTrue$|async" class="border-primary">
       </app-dial>
       <app-dial [header]="'Cap à suivre'" [defaultBody]="'---'"
-                [body]="orientation ? orientation + '°' : ''" class="border-white"></app-dial>
+                [body]="orientation$|async" class="border-white"></app-dial>
     </div>
   </div>
 </div>

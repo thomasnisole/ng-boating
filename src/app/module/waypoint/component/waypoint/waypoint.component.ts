@@ -3,7 +3,7 @@ import {Waypoint} from '../../../core/model/waypoint.model';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {WaypointService} from '../../../core/service/waypoint.service';
 import {catchError, mergeMap} from 'rxjs/internal/operators';
-import {EMPTY, Observable, of} from 'rxjs/index';
+import {EMPTY, iif, Observable, of} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 import {TranslateService} from '@ngx-translate/core';
@@ -30,23 +30,21 @@ export class WaypointComponent implements OnInit {
 
   public ngOnInit(): void {
     this.waypoint$ = this.activatedRoute.params.pipe(
-      mergeMap((p: Params) => {
-        if (!p['waypoint_id']) {
-          return of(new Waypoint());
-        } else {
-          return this.waypointService.findById(p['waypoint_id']).pipe(
-            catchError(() => {
-              this.router.navigate(['app', 'waypoints', 'add']);
+      mergeMap((p: Params) => iif(
+        () => !p['waypoint_id'],
+        of(new Waypoint()),
+        this.waypointService.findById(p['waypoint_id']).pipe(
+          catchError(() => {
+            this.router.navigate(['app', 'waypoints', 'add']);
 
-              return EMPTY;
-            })
-          );
-        }
-      })
+            return EMPTY;
+          })
+        )
+      ))
     );
   }
 
-  public submit(value): void {
+  public submit(value: Waypoint): void {
     let observable$: Observable<Waypoint>;
     let toAdd: boolean = false;
     if (value.id) {
@@ -57,8 +55,8 @@ export class WaypointComponent implements OnInit {
     }
 
     observable$.subscribe(
-      (waypoint: Waypoint) => this.router.navigate(['app', 'waypoints']),
-      (err) => {
+      () => this.router.navigate(['app', 'waypoints']),
+      () => {
         if (toAdd) {
           value.id = null;
         }

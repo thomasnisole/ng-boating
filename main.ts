@@ -43,7 +43,9 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
+  if (!environment.production) {
+    win.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   win.on('closed', () => {

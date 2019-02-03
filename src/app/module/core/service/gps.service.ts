@@ -11,16 +11,16 @@ export class GpsService extends NmeaService {
 
   private currentWaypoint: BehaviorSubject<Waypoint> = new BehaviorSubject(null);
 
-  public currentWaypoint$: Observable<Waypoint> = EMPTY;
-
   public constructor(nmeaClientService: NmeaClientService) {
     super(nmeaClientService);
-
-    this.currentWaypoint$ = this.currentWaypoint;
   }
 
   public changeCurrentWaypoint(waypoint: Waypoint) {
     this.currentWaypoint.next(waypoint);
+  }
+
+  public getCurrentWaypoint(): Observable<Waypoint> {
+    return this.currentWaypoint;
   }
 
   public getGPRMC(): Observable<RMCPacket> {

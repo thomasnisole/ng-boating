@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {UserPreferences} from '../model/user-preferences.model';
 import {environment} from '../../../../environments/environment';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {NgxTsDeserializerService, NgxTsSerializerService} from 'ngx-ts-serializer';
 import {ElectronService} from '../../system/service/electron.service';
 import {filter} from 'rxjs/operators';
@@ -11,9 +11,9 @@ export class UserPreferencesService {
 
   private userPreferencesSubject: BehaviorSubject<UserPreferences>;
 
-  private filePath: string = '';
+  private filePath: string = this.electronService.os.homedir() + '/.ng-boating';
 
-  private readonly userPreferencesFileName: string = 'user-preferences.json';
+  private readonly userPreferencesFileName: string = environment.userPreferencesFileName;
 
   public constructor(private deserializer: NgxTsDeserializerService,
                      private serializer: NgxTsSerializerService,

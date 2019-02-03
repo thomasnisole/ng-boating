@@ -1,12 +1,12 @@
-<div class="d-flex h-100 flex-column" (click)="onClick()" *ngIf="rmcData$|async as rmcData">
+<div class="d-flex h-100 flex-column" (click)="onClick()">
   <div class="top-side">
-    <app-dial [header]="'gps.dial-title.coordinates'|translate" [defaultBody]="'----'" [body]="getCoordAsString(rmcData)" class="border-warning">
+    <app-dial [header]="'gps.dial-title.coordinates'|translate" [defaultBody]="'----'" [body]="coordAsString$|async" class="border-warning">
     </app-dial>
-    <app-dial [header]="'Cap'" [defaultBody]="'---'" [body]="getTractTrue(rmcData)" class="border-primary"></app-dial>
+    <app-dial [header]="'gps.dial-title.angle'|translate" [defaultBody]="'---'" [body]="trackTrue$|async" class="border-primary"></app-dial>
   </div>
 
   <div class="bottom-side">
-    <app-dial [header]="'gps.dial-title.speed'|translate" [defaultBody]="'--'" [body]="getSpeed(rmcData)" [footer]="'Kts'" class="border-success">
+    <app-dial [header]="'gps.dial-title.speed'|translate" [defaultBody]="'--'" [body]="speed$|async" [footer]="'Kts'" class="border-success">
     </app-dial>
   </div>
 </div>

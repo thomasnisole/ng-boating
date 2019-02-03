@@ -4,7 +4,8 @@
     "waypoints": "Waypoints",
     "add-waypoint": "Ajouter un waypoint",
     "tide": "Marée",
-    "settings": "Réglages"
+    "settings": "Réglages",
+    "quit": "Quitter"
   },
   "error": {
     "an-error-occurred": "Une erreur est survenue"
