@@ -2,9 +2,17 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {filter, map, mergeMap} from 'rxjs/internal/operators';
 import {GpsService} from '../../module/core/service/gps.service';
-import {GGAPacket} from 'nmea-simple';
 import {Waypoint} from '../../module/core/model/waypoint.model';
-import {Observable, Subscription} from 'rxjs';
+import {EMPTY, iif, Observable, of} from 'rxjs';
+import {NmeaClientService} from '../../module/core/service/nmea-client.service';
+import {NmeaService} from '../../module/core/service/nmea.service';
+import {GSAPacket, RMCPacket} from 'nmea-simple';
+
+enum GPSStatus {
+  CLOSED = 'closed',
+  CONNECTING = 'connecting',
+  CONNECTED = 'connected'
+}
 
 @Component({
   selector: 'app-layout',
@@ -13,15 +21,16 @@ import {Observable, Subscription} from 'rxjs';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
 
-  private ggaPacketSubscription: Subscription;
+  public currentStatus$: Observable<GPSStatus>;
 
   public title: string;
 
-  public ggaPacket: GGAPacket;
-
   public currentWaypoint$: Observable<Waypoint>;
 
-  public constructor(private router: Router, private activatedRoute: ActivatedRoute, private gpsService: GpsService) {
+  public constructor(private router: Router,
+                     private activatedRoute: ActivatedRoute,
+                     private gpsService: GpsService,
+                     private nmeaClient: NmeaClientService) {
     this.router
       .events
       .pipe(
@@ -41,29 +50,33 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.ggaPacketSubscription = this.gpsService.getGPGGA().subscribe(
-      (ggaPacket: GGAPacket) => this.ggaPacket = ggaPacket
+    this.currentStatus$ = this.nmeaClient.isOpened().pipe(
+      mergeMap((isConnected: boolean) => iif(
+        () => isConnected,
+        this.gpsService.getGPGSA().pipe(
+          map((packet: RMCPacket) => packet.status === 'valid' ? GPSStatus.CONNECTED : GPSStatus.CONNECTING)
+        ),
+        of(GPSStatus.CLOSED)
+      ))
     );
 
     this.currentWaypoint$ = this.gpsService.getCurrentWaypoint();
   }
 
   public ngOnDestroy(): void {
-    if (this.ggaPacketSubscription) {
-      this.ggaPacketSubscription.unsubscribe();
-    }
+
   }
 
-  public isConnected(): boolean {
-    if (!this.ggaPacket) {
-      return false;
-    }
+  public isClose(status: GPSStatus): boolean {
+    return status === GPSStatus.CLOSED;
+  }
 
-    if (!this.ggaPacket.fixType) {
-      return false;
-    }
+  public isConnecting(status: GPSStatus): boolean {
+    return status === GPSStatus.CONNECTING;
+  }
 
-    return this.ggaPacket.fixType !== 'none';
+  public isConnected(status: GPSStatus): boolean {
+    return status === GPSStatus.CONNECTED;
   }
 
   public cancelCurrentWaypoint(): void {

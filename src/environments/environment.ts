@@ -1,6 +1,5 @@
 export const environment = {
   production: false,
-  backendUrl: 'http://localhost:80/',
   defaultUserPreferences: {
     language: 'fr',
     port: null,

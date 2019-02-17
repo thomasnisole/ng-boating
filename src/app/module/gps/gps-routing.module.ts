@@ -3,12 +3,20 @@ import {NgModule} from '@angular/core';
 import {SatellitesViewComponent} from './component/satellites-view/satellites-view.component';
 import {MainViewComponent} from './component/main-view/main-view.component';
 import {WaypointViewComponent} from './component/waypoint-view/waypoint-view.component';
+import {DebugNmeaComponent} from './component/debug-nmea/debug-nmea.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     redirectTo: 'satellites'
+  },
+  {
+    path: 'satellites',
+    component: SatellitesViewComponent,
+    data: {
+      title: 'Satellites'
+    }
   },
   {
     path: 'main',
@@ -25,10 +33,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'satellites',
-    component: SatellitesViewComponent,
+    path: 'debug',
+    component: DebugNmeaComponent,
     data: {
-      title: 'Satellites'
+      title: 'Debug'
     }
   }
 ];

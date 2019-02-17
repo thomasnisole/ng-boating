@@ -5,6 +5,7 @@ import { MainViewComponent } from './component/main-view/main-view.component';
 import {SharedModule} from '../shared/shared.module';
 import { DialComponent } from './component/dial/dial.component';
 import { WaypointViewComponent } from './component/waypoint-view/waypoint-view.component';
+import { DebugNmeaComponent } from './component/debug-nmea/debug-nmea.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { WaypointViewComponent } from './component/waypoint-view/waypoint-view.c
     SatellitesViewComponent,
     MainViewComponent,
     DialComponent,
-    WaypointViewComponent
+    WaypointViewComponent,
+    DebugNmeaComponent
   ]
 })
 export class GpsModule { }

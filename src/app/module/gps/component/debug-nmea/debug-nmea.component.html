@@ -1,0 +1,32 @@
+<div class="d-flex h-100" (click)="onClick()">
+  <ul class="text-white" *ngIf="currentGGAPacket$|async as currentGGAPacket">
+    <li *ngFor="let attr of getKeys(currentGGAPacket)">
+      {{ attr }} : {{ (currentGGAPacket)[attr] }}
+    </li>
+  </ul>
+  <ul class="text-white" *ngIf="currentGLLPacket$|async as currentGLLPacket">
+    <li *ngFor="let attr of getKeys(currentGLLPacket)">
+      {{ attr }} : {{ (currentGLLPacket)[attr] }}
+    </li>
+  </ul>
+  <ul class="text-white" *ngIf="currentGSAPacket$|async as currentGSAPacket">
+    <li *ngFor="let attr of getKeys(currentGSAPacket)">
+      {{ attr }} : {{ (currentGSAPacket)[attr] }}
+    </li>
+  </ul>
+  <ul class="text-white" *ngIf="currentGSVPacket$|async as currentGSVPacket">
+    <li *ngFor="let attr of getKeys(currentGSVPacket)">
+      {{ attr }} : {{ (currentGSVPacket)[attr] }}
+    </li>
+  </ul>
+  <ul class="text-white" *ngIf="currentVTGPacket$|async as currentVTGPacket">
+    <li *ngFor="let attr of getKeys(currentVTGPacket)">
+      {{ attr }} : {{ (currentVTGPacket)[attr] }}
+    </li>
+  </ul>
+  <ul class="text-white" *ngIf="currentRMCPacket$|async as currentRMCPacket">
+    <li *ngFor="let attr of getKeys(currentRMCPacket)">
+      {{ attr }} : {{ (currentRMCPacket)[attr] }}
+    </li>
+  </ul>
+</div>

@@ -12,9 +12,10 @@
       {{ currentWaypoint.name }}
       <span class="fa fa-close"></span>
     </span>
-    <span style="width: 27px;"
+    <span *ngIf="currentStatus$|async as currentStatus"
+          style="width: 27px;"
           class="rounded-circle h-100 d-block"
-          [ngClass]="{'bg-success': isConnected(), 'bg-danger': !isConnected()}">
+          [ngClass]="{'bg-success': isConnected(currentStatus), 'bg-danger': isClose(currentStatus), 'bg-warning': isConnecting(currentStatus)}">
     </span>
   </span>
 </h1>

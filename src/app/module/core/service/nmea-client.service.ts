@@ -12,7 +12,7 @@ export class NmeaClientService {
 
   private port: SerialPort;
 
-  private connected$: BehaviorSubject<boolean>;
+  private opened$: BehaviorSubject<boolean>;
 
   private error$: BehaviorSubject<string>;
 
@@ -27,13 +27,17 @@ export class NmeaClientService {
       this.zone.run(() => this.packet.next(line));
     });
 
-    this.connected$ = new BehaviorSubject(false);
+    this.opened$ = new BehaviorSubject(false);
     this.error$ = new BehaviorSubject(null);
     this.packet = new BehaviorSubject(null);
   }
 
   public findAllPorts(): Observable<any[]> {
     return fromPromise(this.electronService.SerialPort.list());
+  }
+
+  public isOpened(): Observable<boolean> {
+    return this.opened$;
   }
 
   public open(baudRate: number, port: string): Observable<boolean> {
@@ -44,36 +48,40 @@ export class NmeaClientService {
         autoOpen: false,
         baudRate: baudRate,
         lock: false
-      },
-      (err) => {
-        if (err) {
-          this.port = null;
-
-          this.connected$.next(false);
-          this.connected$.thrownError(err.toString());
-          this.error$.next(err);
-        } else {
-          console.log('opened', port);
-          this.connected$.next(true);
-        }
       }
     );
 
     this.port.on('close', () => {
       console.log('closed', port);
-      this.connected$.next(false);
+      this.opened$.next(false);
     });
 
     this.port.pipe(this.parser);
 
-    this.port.open();
+    this.port.open((err) => {
+      if (err) {
+        console.log('opened in error', err);
+        this.port = null;
 
-    return this.connected$;
+        this.zone.run(() => {
+          this.opened$.next(false);
+          this.error$.next(err);
+        });
+      } else {
+        console.log('opened', port);
+
+        this.zone.run(() => {
+          this.opened$.next(true);
+        });
+      }
+    });
+
+    return this.opened$;
   }
 
   public close(): void {
     this.port.close(() => {
-      this.connected$.next(false);
+      this.opened$.next(false);
       this.port = null;
     });
   }

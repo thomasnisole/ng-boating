@@ -1,19 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import { MenuComponent } from './component/menu/menu.component';
+import {MenuComponent} from './component/menu/menu.component';
 import {CoreModule} from './module/core/core.module';
-import { LayoutComponent } from './component/layout/layout.component';
+import {LayoutComponent} from './component/layout/layout.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {SharedModule} from './module/shared/shared.module';
-import {SocketIoModule} from 'ngx-socket-io';
 import {UserPreferencesGuard} from './module/system/guard/user-preferences.guard';
 import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrModule} from 'ngx-toastr';
-import {environment} from '../environments/environment';
 import {SystemModule} from './module/system/system.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -33,9 +31,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgbModule,
     NgbModalModule,
     SharedModule,
-    SocketIoModule.forRoot({
-      url: environment.backendUrl
-    }),
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -51,4 +46,5 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

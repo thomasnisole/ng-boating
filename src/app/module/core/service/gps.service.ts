@@ -3,7 +3,7 @@ import {BehaviorSubject, EMPTY, Observable} from 'rxjs';
 import {NmeaService} from './nmea.service';
 import {Waypoint} from '../model/waypoint.model';
 import {NmeaClientService} from './nmea-client.service';
-import {GGAPacket, GSVPacket, parseNmeaSentence, RMCPacket} from 'nmea-simple';
+import {GGAPacket, GLLPacket, GSAPacket, GSVPacket, Packet, parseNmeaSentence, RMCPacket, VTGPacket} from 'nmea-simple';
 import {filter, map} from 'rxjs/operators';
 
 @Injectable()
@@ -23,10 +23,31 @@ export class GpsService extends NmeaService {
     return this.currentWaypoint;
   }
 
-  public getGPRMC(): Observable<RMCPacket> {
+  public getPacket(): Observable<Packet> {
     return this.nmeaClientService.getPacket().pipe(
-      filter((line: string) => line.startsWith('$GPRMC')),
-      map((line: string) => <RMCPacket>parseNmeaSentence(line))
+      filter((line: string) => line.startsWith('$GP')),
+      map((line: string) => parseNmeaSentence(line))
+    );
+  }
+
+  public getGPGGA(): Observable<GGAPacket> {
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPGGA')),
+      map((line: string) => <GGAPacket>parseNmeaSentence(line))
+    );
+  }
+
+  public getGPGLL(): Observable<GLLPacket> {
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPGLL')),
+      map((line: string) => <GLLPacket>parseNmeaSentence(line))
+    );
+  }
+
+  public getGPGSA(): Observable<GSAPacket> {
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPGSA')),
+      map((line: string) => <GSAPacket>parseNmeaSentence(line))
     );
   }
 
@@ -37,10 +58,17 @@ export class GpsService extends NmeaService {
     );
   }
 
-  public getGPGGA(): Observable<GGAPacket> {
+  public getGPVTG(): Observable<VTGPacket> {
     return this.nmeaClientService.getPacket().pipe(
-      filter((line: string) => line.startsWith('$GPGGA')),
-      map((line: string) => <GGAPacket>parseNmeaSentence(line))
+      filter((line: string) => line.startsWith('$GPVTG')),
+      map((line: string) => <VTGPacket>parseNmeaSentence(line)),
+    );
+  }
+
+  public getGPRMC(): Observable<RMCPacket> {
+    return this.nmeaClientService.getPacket().pipe(
+      filter((line: string) => line.startsWith('$GPRMC')),
+      map((line: string) => <RMCPacket>parseNmeaSentence(line))
     );
   }
 }

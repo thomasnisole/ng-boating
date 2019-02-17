@@ -109,6 +109,6 @@ export class WaypointViewComponent implements OnInit {
   }
 
   public onClick(): void {
-    this.router.navigate(['app', 'gps', 'satellites']);
+    this.router.navigate(['app', 'gps', 'debug']);
   }
 }

@@ -1,7 +1,6 @@
 import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-import {environment} from './src/environments/environment';
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -22,11 +21,11 @@ function createWindow() {
     // height: 600,
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`,
-    fullscreen: environment.production,
+    fullscreen: !serve,
     webPreferences: {
       webSecurity: false,
       allowRunningInsecureContent: true,
-      devTools: !environment.production
+      devTools: true
     }
   });
 
@@ -43,9 +42,9 @@ function createWindow() {
     }));
   }
 
-  if (!environment.production) {
+  // if (serve) {
     win.webContents.openDevTools();
-  }
+  // }
 
   // Emitted when the window is closed.
   win.on('closed', () => {
