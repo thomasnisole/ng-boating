@@ -16,10 +16,10 @@
               [body]="speed$|async" [footer]="'Kts'" class="border-success">
     </app-dial>
     <div class="d-flex">
-      <app-dial [header]="'Cap'" [defaultBody]="'---'"
+      <app-dial [header]="'gps.dial-title.angle'|translate" [defaultBody]="'---'"
                 [body]="trackTrue$|async" class="border-primary">
       </app-dial>
-      <app-dial [header]="'Cap à suivre'" [defaultBody]="'---'"
+      <app-dial [header]="'gps.dial-title.angle-to-follow'|translate" [defaultBody]="'---'"
                 [body]="orientation$|async" class="border-white"></app-dial>
     </div>
   </div>

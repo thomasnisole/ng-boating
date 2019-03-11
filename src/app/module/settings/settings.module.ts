@@ -4,6 +4,7 @@ import { SettingsComponent } from './component/settings/settings.component';
 import { TrackerComponent } from './component/tracker/tracker.component';
 import { GeneralComponent } from './component/general/general.component';
 import {SharedModule} from '../shared/shared.module';
+import { QuitComponent } from './component/quit/quit.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import {SharedModule} from '../shared/shared.module';
   declarations: [
     SettingsComponent,
     TrackerComponent,
-    GeneralComponent
+    GeneralComponent,
+    QuitComponent
   ]
 })
 export class SettingsModule { }

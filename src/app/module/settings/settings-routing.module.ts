@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {SettingsComponent} from './component/settings/settings.component';
 import {TrackerComponent} from './component/tracker/tracker.component';
 import {GeneralComponent} from './component/general/general.component';
+import {QuitComponent} from './component/quit/quit.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,13 @@ const routes: Routes = [
         component: TrackerComponent,
         data: {
           title: 'menu.settings'
+        }
+      },
+      {
+        path: 'quit',
+        component: QuitComponent,
+        data: {
+          title: 'menu.quit'
         }
       }
     ]

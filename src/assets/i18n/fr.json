@@ -17,7 +17,8 @@
   "settings": {
     "menu": {
       "general": "Général",
-      "gps-tracker": "GPS Tracker"
+      "gps-tracker": "GPS Tracker",
+      "quit": "Quitter"
     },
     "general": {
       "language": {
@@ -35,6 +36,10 @@
         "baud-rate": "Baud rate",
         "logs": "Logs"
       }
+    },
+    "quit": {
+      "message": "Êtes-vous sûr de vouloir quitter le logiciel du GPS et vous rendre dans le système d'exploitation ?",
+      "confirmation": "Oui, quitter le logiciel"
     }
   },
   "gps": {

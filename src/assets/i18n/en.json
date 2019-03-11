@@ -4,7 +4,8 @@
     "waypoints": "Waypoints",
     "add-waypoint": "Add a waypoint",
     "tide": "Tide",
-    "settings": "Settings"
+    "settings": "Settings",
+    "quit": "Quit"
   },
   "error": {
     "an-error-occurred": "An error occurred"
@@ -16,7 +17,8 @@
   "settings": {
     "menu": {
       "general": "General",
-      "gps-tracker": "GPS Tracker"
+      "gps-tracker": "GPS Tracker",
+      "quit": "Quit"
     },
     "general": {
       "language": {
@@ -34,6 +36,10 @@
         "baud-rate": "Baud rate",
         "logs": "Logs"
       }
+    },
+    "quit": {
+      "message": "Are you sure you want to leave the GPS software and go to the operating system ?",
+      "confirmation": "Yes, leave software"
     }
   },
   "gps": {
