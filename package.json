@@ -5,7 +5,7 @@
   "description": "A simple boating gps for cruising",
   "main": "main.js",
   "scripts": {
-    "install": "electron-rebuild",
+    "install": "electron-rebuild --pre-gyp-fix",
     "postinstall": "npm run postinstall:electron && npx electron-builder install-app-deps",
     "postinstall:web": "node postinstall-web",
     "postinstall:electron": "node postinstall",
