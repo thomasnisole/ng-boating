@@ -57,7 +57,7 @@
     "promise-readable": "^3.1.5",
     "rxjs": "^6.0.0",
     "serialport": "^7.1.4",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "uuid": "^3.3.2",
     "zone.js": "^0.8.26"
   },
